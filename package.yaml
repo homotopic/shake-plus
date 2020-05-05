@@ -10,7 +10,8 @@ extra-source-files:
 - ChangeLog.md
 
 category:            development, shake
-description:         Complete re-export of shake using well-typed paths.
+description:         Re-export of Shake using well-typed paths and ReaderT.
+synopsis:            Re-export of Shake using well-typed paths and ReaderT.
 
 default-extensions:
 - BangPatterns
