@@ -20,4 +20,5 @@ collapses a `ReaderT r Rules ()` to a `Rules ()` and passes the environment to
 each underlying `RAction`.
 
 This is an early release and a lot of things may be missing or broken, but so
-far the conveniences have been worth it,
+far the conveniences have been worth it. Until it's stable/complete you probaly
+want to `import qualified Development.Shake` to deal with any missing parts.
