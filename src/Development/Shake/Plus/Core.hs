@@ -6,8 +6,13 @@ module Development.Shake.Plus.Core (
 , withUnliftAction
 , askUnliftAction
 , toAction
+, RAction
+, ShakePlus
+, runRAction
+, runShakePlus
 ) where
 
+import Control.Exception
 import Development.Shake (Action, Rules)
 import RIO
 
@@ -72,3 +77,10 @@ runRAction env (RAction (ReaderT f)) = liftAction (f env)
 
 runShakePlus :: MonadRules m => env -> ShakePlus env a -> m a 
 runShakePlus env (ShakePlus (ReaderT f)) = liftRules (f env)
+
+instance MonadThrow (RAction r) where
+  throwM = liftIO . Control.Exception.throwIO
+
+instance MonadThrow (ShakePlus r) where
+  throwM = liftIO . Control.Exception.throwIO
+

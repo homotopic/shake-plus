@@ -1,0 +1,18 @@
+module Development.Shake.Plus.Cache (
+  newCache
+, newCacheIO
+) where
+
+import qualified Development.Shake
+import RIO
+import Development.Shake.Plus.Core
+
+-- | Lifted version of `Development.Shake.newCache` using `RAction`.
+newCache :: (MonadRules m, MonadReader r m, Eq k, Hashable k)
+         => (k -> RAction r v)
+         -> m (k -> RAction r v)
+newCache ract = ask >>= \r -> liftRules $ (liftAction . ) <$> Development.Shake.newCache (runRAction r . ract)
+
+-- | Lifted version of `Development.Shake.newCacheIO` using `RAction`.
+newCacheIO :: (MonadIO m, MonadReader r m, Eq k, Hashable k) => (k -> RAction r v) -> m (k -> RAction r v)
+newCacheIO f = ask >>= \r -> liftIO $ (liftAction . ) <$> Development.Shake.newCacheIO (\y -> runRAction r (f y))

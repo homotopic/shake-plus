@@ -1,5 +1,5 @@
 name:                shake-plus
-version:             0.1.0.0
+version:             0.0.1.0
 license:             MIT
 author:              "Daniel Firth"
 maintainer:          "dan.firth@homotopic.tech"
@@ -53,6 +53,7 @@ default-extensions:
 
 dependencies:
 - base >= 4.7 && < 5
+- extra
 - path
 - rio
 - shake
