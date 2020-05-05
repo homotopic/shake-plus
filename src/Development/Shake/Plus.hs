@@ -1,6 +1,6 @@
 module Development.Shake.Plus (
   module Development.Shake.Plus.Cache
-  module Development.Shake.Plus.Core
+, module Development.Shake.Plus.Core
 , module Development.Shake.Plus.Directory
 , module Development.Shake.Plus.File
 , module Development.Shake.Plus.FileRules
