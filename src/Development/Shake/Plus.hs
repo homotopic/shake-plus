@@ -4,7 +4,7 @@ module Development.Shake.Plus (
 , module Development.Shake.Plus.Directory
 , module Development.Shake.Plus.File
 , module Development.Shake.Plus.FileRules
-, module Development.Shake.Plus.Orcle
+, module Development.Shake.Plus.Oracle
 ) where
 
 import Development.Shake.Plus.Cache
