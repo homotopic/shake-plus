@@ -13,10 +13,12 @@ module Development.Shake.Plus.Core (
 , Development.Shake.Action
 , Development.Shake.Rules
 , Development.Shake.FilePattern
+, Development.Shake.shake
+, Development.Shake.shakeOptions
 ) where
 
 import Control.Exception
-import Development.Shake (Action, Rules, FilePattern)
+import Development.Shake (Action, Rules, FilePattern, shake, shakeOptions)
 import RIO
 
 -- | Monads in which `Action`s may be embedded.
