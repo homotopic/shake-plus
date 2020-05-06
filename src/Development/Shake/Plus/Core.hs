@@ -22,7 +22,7 @@ import Development.Shake (Action, Rules, FilePattern, shake, shakeOptions)
 import RIO
 
 -- | Monads in which `Action`s may be embedded.
-class Monad m => MonadAction m where
+class MonadIO m => MonadAction m where
   liftAction :: Action a -> m a
 
 instance MonadAction Action where
@@ -73,7 +73,7 @@ toAction m = withRunInAction $ \run -> return $ run m
 
 -- | Concrete `Action` runner, hardcoded to `ReaderT r Action a`.
 newtype RAction r a = RAction (ReaderT r Action a)
-  deriving (Functor, Applicative, Monad, MonadReader r, MonadIO, MonadAction, MonadUnliftAction)
+  deriving (Functor, Applicative, Monad, MonadReader r, MonadIO, MonadAction, MonadUnliftAction, MonadFail)
 
 -- | Concrete `Rules` collector, hardcoded to `ReaderT r Rules a`.
 newtype ShakePlus r a = ShakePlus (ReaderT r Rules a)
