@@ -1,5 +1,8 @@
 module Development.Shake.Plus.FileRules (
   need
+, want
+, needP
+, wantP
 , (%>)
 , (|%>)
 , phony
