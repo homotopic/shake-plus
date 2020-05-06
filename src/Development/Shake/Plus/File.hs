@@ -3,9 +3,15 @@ module Development.Shake.Plus.File (
 , copyFileChanged
 , readFile'
 , readFileLines
+, readFileIn'
+, readFileWithin
 , writeFile'
 , writeFileLines
+, writeFileIn'
+, writeFileWithin
 , writeFileChanged
+, writeFileChangedIn
+, writeFileChangedWithin
 , removeFiles
 , removeFilesAfter
 ) where
@@ -17,6 +23,7 @@ import Development.Shake.Plus.Core
 import RIO
 import qualified RIO.Text as T
 import Path
+import Within
 
 -- | Lifted version of `Development.Shake.copyFile` with well-typed `Path`s.
 copyFile' :: (MonadAction m, Partial) => Path Rel File -> Path Rel File -> m ()
@@ -34,6 +41,15 @@ readFile' = liftAction . fmap T.pack . Development.Shake.readFile' . toFilePath
 readFileLines :: (MonadAction m, Partial) => Path Rel File -> m [Text]
 readFileLines = liftAction . fmap (fmap T.pack) . Development.Shake.readFileLines . toFilePath
 
+-- | Like `readFile'`, but with an argument for the parent directory. Used for symmetry with
+-- the way `Development.Shake.getDirectoryFiles` takes arguments.
+readFileIn' :: MonadAction m => Path Rel Dir -> Path Rel File -> m Text
+readFileIn' x y = readFile' $ x </> y
+
+-- | Like 'readFile'`, but accepts a `Within` value.
+readFileWithin :: MonadAction m => Within Rel File -> m Text
+readFileWithin = readFile' . fromWithin
+
 -- | Lifted version of `Development.Shake.writeFile` with well-typed `Path`.
 writeFile' :: (MonadAction m, Partial) => Path Rel File -> Text -> m ()
 writeFile' x y = liftAction $ Development.Shake.writeFile' (toFilePath x) (T.unpack y)
@@ -42,9 +58,27 @@ writeFile' x y = liftAction $ Development.Shake.writeFile' (toFilePath x) (T.unp
 writeFileLines :: (MonadAction m, Partial) => Path Rel File -> [Text] -> m ()
 writeFileLines x y = liftAction $ Development.Shake.writeFileLines (toFilePath x) (fmap T.unpack y)
 
+-- | Like `writeFile'`, but with an argument for the parent directory. Used for symmetry with
+-- the way `Development.Shake.getDirectoryFiles` takes arguments.
+writeFileIn' :: MonadAction m => Path Rel Dir -> Path Rel File -> Text -> m ()
+writeFileIn' x y = writeFile' $ x </> y
+
+-- | Like 'writeFile'`, but accepts a `Within` value.
+writeFileWithin :: MonadAction m => Within Rel File -> Text -> m ()
+writeFileWithin = writeFile' . fromWithin
+
 -- | Lifted version of `Development.Shake.writeFileChanged` with well-typed `Path`.
 writeFileChanged :: (MonadAction m, Partial) => Path b File -> Text -> m ()
 writeFileChanged x y = liftAction $ Development.Shake.writeFileChanged (toFilePath x) (T.unpack y)
+
+-- | Like `writeFileChanged'`, but with an argument for the parent directory. Used for symmetry with
+-- the way `Development.Shake.getDirectoryFiles` takes arguments.
+writeFileChangedIn :: MonadAction m => Path Rel Dir -> Path Rel File -> Text -> m ()
+writeFileChangedIn x y = writeFileChanged $ x </> y
+
+-- | Like `writeFileChanged'`, but accepts a `Within` value.
+writeFileChangedWithin :: MonadAction m => Within Rel File -> Text -> m ()
+writeFileChangedWithin = writeFileChanged . fromWithin 
 
 -- | Lifted version of `Development.Shake.removeFiles` with well-typed `Path`.
 removeFiles :: MonadAction m => Path b File -> [FilePattern] -> m ()

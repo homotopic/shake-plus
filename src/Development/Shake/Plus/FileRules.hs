@@ -3,6 +3,10 @@ module Development.Shake.Plus.FileRules (
 , want
 , needP
 , wantP
+, needIn
+, wantIn
+, needWithin
+, wantWithin
 , (%>)
 , (|%>)
 , phony
@@ -14,6 +18,7 @@ import qualified Development.Shake
 import Development.Shake (FilePattern)
 import RIO
 import Path
+import Within
 
 -- | Lifted version of `Development.Shake.need`, This still uses `String`s
 -- because it may refer to a phony rule. For the `Path` specific version
@@ -34,6 +39,22 @@ needP = need . map toFilePath
 -- | Lifted version of `Development.Shake.want` using well-typed `Path`s
 wantP :: MonadRules m => [Path Rel File] -> m ()
 wantP = want . map toFilePath
+
+-- | Like `needP`, but accepts `Path`s relative to the first argument.
+needIn :: MonadAction m => Path Rel Dir -> [Path Rel File] -> m ()
+needIn x = needP . fmap (x </>)
+
+-- | Like `wantP`, but accepts `Path`s relative to the first argument.
+wantIn :: MonadRules m => Path Rel Dir -> [Path Rel File] -> m ()
+wantIn x = wantP . fmap (x </>)
+
+-- | Like `needP`, but accepts `Within` values.
+needWithin :: MonadAction m => [Within Rel File] -> m ()
+needWithin = needP . map fromWithin
+
+-- | Like `wantP`, but accepts `Within` values.
+wantWithin :: MonadRules m => [Within Rel File] -> m ()
+wantWithin = wantP . map fromWithin
 
 -- | Lifted version of `Development.Shake.%>` using well-typed `Path`s
 (%>) :: (Partial, MonadReader r m, MonadRules m) => FilePattern -> (Path Rel File -> RAction r ()) -> m ()
