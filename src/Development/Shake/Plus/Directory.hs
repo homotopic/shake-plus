@@ -7,10 +7,8 @@ module Development.Shake.Plus.Directory (
 , getDirectoryFilesIO
 ) where
 
-import Control.Exception.Extra
 import Development.Shake.Plus.Core
 import qualified Development.Shake
-import Development.Shake (FilePattern)
 import RIO
 import Path
 import Within
