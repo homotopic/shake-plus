@@ -1,5 +1,5 @@
 name:                shake-plus
-version:             0.0.2.0
+version:             0.0.2.1
 license:             MIT
 author:              "Daniel Firth"
 maintainer:          "dan.firth@homotopic.tech"
@@ -10,8 +10,8 @@ extra-source-files:
 - ChangeLog.md
 
 category:            development, shake
-synopsis:         Re-export of Shake using well-typed paths and ReaderT.
-description:            Re-export of Shake using well-typed paths and ReaderT. This is an early release so some things may be missing or broken but so far the conveniences have been worth it.
+synopsis:            Re-export of Shake using well-typed paths and ReaderT.
+description:         Re-export of Shake using well-typed paths and ReaderT. This is an early release so some things may be missing or broken but so far the conveniences have been worth it.
 
 default-extensions:
 - BangPatterns
