@@ -18,7 +18,6 @@ module Development.Shake.Plus.File (
 
 import Control.Exception.Extra
 import qualified Development.Shake
-import Development.Shake (FilePattern)
 import Development.Shake.Plus.Core
 import RIO
 import qualified RIO.Text as T
