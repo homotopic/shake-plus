@@ -15,8 +15,10 @@ module Development.Shake.Plus.Core (
 , Development.Shake.FilePattern
 , Development.Shake.shake
 , Development.Shake.shakeOptions
+, localM
 ) where
 
+import Control.Comonad.Env
 import Control.Exception
 import Development.Shake (Action, Rules, FilePattern, shake, shakeOptions)
 import RIO
@@ -81,11 +83,11 @@ newtype ShakePlus r a = ShakePlus (ReaderT r Rules a)
 
 -- | Run an `RAction` with an environment, consuming it for a result.
 runRAction :: MonadAction m => env -> RAction env a -> m a
-runRAction env (RAction (ReaderT f)) = liftAction (f env)
+runRAction r (RAction (ReaderT f)) = liftAction (f r)
 
 -- | Run a `ShakePlus` with an environment, consuming it for some Shake `Rules`.
 runShakePlus :: MonadRules m => env -> ShakePlus env a -> m a 
-runShakePlus env (ShakePlus (ReaderT f)) = liftRules (f env)
+runShakePlus r (ShakePlus (ReaderT f)) = liftRules (f r)
 
 instance MonadThrow (RAction r) where
   throwM = liftIO . Control.Exception.throwIO
@@ -93,3 +95,6 @@ instance MonadThrow (RAction r) where
 instance MonadThrow (ShakePlus r) where
   throwM = liftIO . Control.Exception.throwIO
 
+-- | Transform the environment of an `EnvT` via some monadic operation.
+localM :: Monad m => (e -> m e') -> EnvT e w a -> m (EnvT e' w a)
+localM f (EnvT e wa) = f e >>= \e' -> return $ EnvT e' wa

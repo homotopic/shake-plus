@@ -7,11 +7,11 @@ module Development.Shake.Plus.Directory (
 , getDirectoryFilesIO
 ) where
 
+import Control.Comonad.Env
 import Development.Shake.Plus.Core
 import qualified Development.Shake
 import RIO
 import Path
-import Within
 
 -- | Lifted version of `Development.Shake.doesFileExist` using well-typed `Path`s.
 doesFileExist :: MonadAction m => Path b File -> m Bool
@@ -26,10 +26,10 @@ getDirectoryFiles :: MonadAction m => Path b Dir -> [FilePattern] -> m [Path Rel
 getDirectoryFiles x y = liftAction $ traverse (liftIO . parseRelFile) =<< Development.Shake.getDirectoryFiles (toFilePath x) y
 
 -- | Like `getDirectoryFiles`, but returns `Within` values.
-getDirectoryFilesWithin :: MonadAction m => Path Rel Dir -> [FilePattern] -> m [Within Rel File]
+getDirectoryFilesWithin :: MonadAction m => Path Rel Dir -> [FilePattern] -> m (Env (Path Rel Dir) [(Path Rel File)])
 getDirectoryFilesWithin x pat = do
   xs <- getDirectoryFiles x pat
-  return ((`within` x) <$> xs)
+  return (env x xs)
 
 -- | Lifted version of `Development.Shake.getDirectoryDirs` using well-typed `Path`s.
 getDirectoryDirs :: MonadAction m => Path b Dir -> m [Path Rel Dir]
