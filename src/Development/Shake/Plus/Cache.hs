@@ -4,8 +4,8 @@ module Development.Shake.Plus.Cache (
 ) where
 
 import qualified Development.Shake
-import RIO
-import Development.Shake.Plus.Core
+import           Development.Shake.Plus.Core
+import           RIO
 
 -- | Lifted version of `Development.Shake.newCache` using `RAction`.
 newCache :: (MonadRules m, MonadReader r m, Eq k, Hashable k)

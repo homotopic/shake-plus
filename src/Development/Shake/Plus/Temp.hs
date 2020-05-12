@@ -6,9 +6,9 @@ module Development.Shake.Plus.Temp (
 ) where
 
 import qualified Development.Shake
-import Development.Shake.Plus.Core
-import RIO hiding (withTempFile)
-import Path
+import           Development.Shake.Plus.Core
+import           Path
+import           RIO                         hiding (withTempFile)
 
 -- | Unlifted version of `Development.Shake.withTempFile` with well-typed `Path`.
 withTempFile :: (MonadUnliftAction m, MonadThrow m) => (Path Rel File -> m a) -> m a

@@ -12,14 +12,14 @@ module Development.Shake.Plus.FileRules (
 , phony
 ) where
 
-import Control.Exception.Extra
-import Control.Comonad.Env as E
-import Development.Shake.Plus.Core
+import           Control.Comonad.Env         as E
+import           Control.Exception.Extra
 import qualified Development.Shake
 import qualified Development.Shake.FilePath
-import RIO as R
-import Path
-import Within
+import           Development.Shake.Plus.Core
+import           Path
+import           RIO                         as R
+import           Within
 
 -- | Lifted version of `Development.Shake.need`, This still uses `String`s
 -- because it may refer to a phony rule. For the `Path` specific version

@@ -1,5 +1,13 @@
 # Changelog for shake-plus
 
+## v0.1.0.0
+
+* Update to `within-0.1.1.0` which changes the data type to an `Env` comonad.
+* Drop the `loadSortFilterApply` loader functions in favour of a simpler
+  `batchLoad` set of functions which accepts a loading function which can be
+  cached.
+* Add enough documentation to get started.
+
 ## v0.0.2.1
 
 * Add functions based on [Within](https://hackage.haskell.org/package/path) to better

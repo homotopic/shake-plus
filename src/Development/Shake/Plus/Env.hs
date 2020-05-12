@@ -1,13 +1,13 @@
 module Development.Shake.Plus.Env (
   getEnv
 , getEnvWithDefault
-, getEnvError    
+, getEnvError
 ) where
 
-import Control.Exception.Extra
+import           Control.Exception.Extra
 import qualified Development.Shake
-import Development.Shake.Plus
-import RIO
+import           Development.Shake.Plus
+import           RIO
 
 -- | Lifted version of `Development.Shake.getEnv`
 getEnv :: MonadAction m => String -> m (Maybe String)

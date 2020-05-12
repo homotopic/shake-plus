@@ -17,9 +17,10 @@ module Development.Shake.Plus.Core (
 , Development.Shake.shakeOptions
 ) where
 
-import Control.Exception
-import Development.Shake (Action, Rules, FilePattern, shake, shakeOptions)
-import RIO
+import           Control.Exception
+import           Development.Shake (Action, FilePattern, Rules, shake,
+                                    shakeOptions)
+import           RIO
 
 -- | Monads in which `Action`s may be embedded.
 class MonadIO m => MonadAction m where
@@ -84,7 +85,7 @@ runRAction :: MonadAction m => env -> RAction env a -> m a
 runRAction r (RAction (ReaderT f)) = liftAction (f r)
 
 -- | Run a `ShakePlus` with an environment, consuming it for some Shake `Rules`.
-runShakePlus :: MonadRules m => env -> ShakePlus env a -> m a 
+runShakePlus :: MonadRules m => env -> ShakePlus env a -> m a
 runShakePlus r (ShakePlus (ReaderT f)) = liftRules (f r)
 
 instance MonadThrow (RAction r) where

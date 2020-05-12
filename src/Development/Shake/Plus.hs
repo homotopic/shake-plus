@@ -6,6 +6,7 @@ module Development.Shake.Plus (
 , module Development.Shake.Plus.FileRules
 , module Development.Shake.Plus.Loaders
 , module Development.Shake.Plus.Oracle
+, module Development.Shake.Plus.Temp
 ) where
 
 import Development.Shake.Plus.Cache
@@ -15,3 +16,4 @@ import Development.Shake.Plus.File
 import Development.Shake.Plus.FileRules
 import Development.Shake.Plus.Loaders
 import Development.Shake.Plus.Oracle
+import Development.Shake.Plus.Temp

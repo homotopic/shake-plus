@@ -6,11 +6,11 @@ module Development.Shake.Plus.Oracle (
 , askOracles
 ) where
 
-import Control.Exception.Extra
+import           Control.Exception.Extra
+import           Development.Shake           (RuleResult, ShakeValue)
 import qualified Development.Shake
-import Development.Shake (RuleResult, ShakeValue)
-import Development.Shake.Plus.Core
-import RIO
+import           Development.Shake.Plus.Core
+import           RIO
 
 -- | Lifted version of `Development.Shake.addOracle` using `RAction` runner.
 addOracle :: (MonadRules m, MonadReader r m, RuleResult q ~ a, ShakeValue q, ShakeValue a, Partial)
@@ -37,4 +37,4 @@ askOracle = liftAction . Development.Shake.askOracle
 -- | Lifted version of `Development.Shake.askOracles`.
 askOracles :: (MonadAction m, RuleResult q ~ a, ShakeValue q, ShakeValue a) => [q]-> m [a]
 askOracles = liftAction . Development.Shake.askOracles
- 
+

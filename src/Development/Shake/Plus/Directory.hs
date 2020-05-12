@@ -8,11 +8,11 @@ module Development.Shake.Plus.Directory (
 , getDirectoryFilesIO
 ) where
 
-import Development.Shake.Plus.Core
 import qualified Development.Shake
-import RIO
-import Path
-import Within
+import           Development.Shake.Plus.Core
+import           Path
+import           RIO
+import           Within
 
 -- | Lifted version of `Development.Shake.doesFileExist` using well-typed `Path`s.
 doesFileExist :: MonadAction m => Path b File -> m Bool

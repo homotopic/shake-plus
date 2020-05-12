@@ -7,11 +7,11 @@ module Development.Shake.Plus.Config (
 , getConfigKeys
 ) where
 
-import Development.Shake
+import           Development.Shake
 import qualified Development.Shake.Config
-import Development.Shake.Plus.Core
-import Path
-import RIO
+import           Development.Shake.Plus.Core
+import           Path
+import           RIO
 
 -- | Lifted `Development.Shake.Config.readConfigFile` with well-typed path.
 readConfigFile :: MonadIO m => Path a File -> m (HashMap String String)

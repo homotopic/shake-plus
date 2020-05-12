@@ -16,14 +16,14 @@ module Development.Shake.Plus.File (
 , removeFilesAfter
 ) where
 
-import Control.Exception.Extra
+import           Control.Comonad.Env         as E
+import           Control.Exception.Extra
 import qualified Development.Shake
-import Development.Shake.Plus.Core
-import RIO
-import qualified RIO.Text as T
-import Path
-import Control.Comonad.Env as E
-import Within
+import           Development.Shake.Plus.Core
+import           Path
+import           RIO
+import qualified RIO.Text                    as T
+import           Within
 
 -- | Lifted version of `Development.Shake.copyFile` with well-typed `Path`s.
 copyFile' :: (MonadAction m, Partial) => Path Rel File -> Path Rel File -> m ()

@@ -10,11 +10,11 @@ module Development.Shake.Plus.Database (
 , shakeRunAfter
 ) where
 
-import Development.Shake (ShakeOptions, Action, Rules)
-import Development.Shake.Database (ShakeDatabase)
+import           Development.Shake          (Action, Rules, ShakeOptions)
+import           Development.Shake.Database (ShakeDatabase)
 import qualified Development.Shake.Database
-import Path
-import RIO
+import           Path
+import           RIO
 
 -- | Lifted `Development.Shake.Database.shakeOpenDatabase`
 shakeOpenDatabase :: MonadIO m => ShakeOptions -> Rules () -> m (IO ShakeDatabase, IO ())

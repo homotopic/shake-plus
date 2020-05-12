@@ -4,13 +4,13 @@ module Development.Shake.Plus.Loaders (
 , batchLoadWithin'
 ) where
 
-import Development.Shake.Plus.Core
-import Development.Shake.Plus.Directory
-import RIO
-import qualified RIO.HashMap as HM
-import Path
-import Within
- 
+import           Development.Shake.Plus.Core
+import           Development.Shake.Plus.Directory
+import           Path
+import           RIO
+import qualified RIO.HashMap                      as HM
+import           Within
+
 traverseToSnd :: Functor f => (a -> f b) -> a -> f (a, b)
 traverseToSnd f a = (a,) <$> f a
 
