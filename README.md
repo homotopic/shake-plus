@@ -90,7 +90,7 @@ Dir) FilePattern` on the left and carry that env to the callback.
 ```
 
 You change the underlying filepath with `fmap` or `mapM`, whilst you can move
-to a new parent directory by using `localDir, or `localDirM` which is defined
+to a new parent directory by using `localDir`, or `localDirM` which is defined
 in the `Within` library for when the map between parent directories may throw.
 The `Within` library also contains more functions and instances for more
 precise changes between output and source directories.
