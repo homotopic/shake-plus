@@ -1,3 +1,6 @@
+
+
+
 module Development.Shake.Plus.File (
   copyFile'
 , copyFileChanged
@@ -48,16 +51,6 @@ readFileLines = liftAction . fmap (fmap T.pack) . Development.Shake.readFileLine
 -- the way `Development.Shake.getDirectoryFiles` takes arguments.
 readFileIn' :: MonadAction m => Path Rel Dir -> Path Rel File -> m Text
 readFileIn' x y = readFile' $ x </> y
-
--- | Combine a Comonad env with its extract target
--- implode :: ComonadEnv e w => (e -> a -> c) -> w a -> c
--- implode f = liftA2 f E.ask extract
-
--- resorb :: Comonad w => (e -> e' -> e'') -> EnvT e (EnvT e' w) a -> EnvT e'' w a
--- resorb f w@(EnvT e (EnvT e' wa)) = EnvT (f (E.ask w) (E.ask $ lower w)) wa
-
--- h :: MonadAction m => EnvT (Path Rel Dir) (EnvT (Path Rel Dir) (Env (Path Rel File))) Text -> m ()
--- h = implode writeFile' . resorb (</>) . resorb (</>)
 
 -- | Like 'readFile'`, but accepts an `Env` value.
 readFileWithin :: MonadAction m => Env (Path Rel Dir) (Path Rel File) -> m Text
@@ -124,3 +117,6 @@ instance Eq (Env (Path b Dir) (Path Rel File)) where
 
 instance Hashable (Env (Path b Dir) (Path Rel File)) where
   hashWithSalt n w = hashWithSalt n (fromWithin w)
+
+instance Show (Env (Path b Dir) (Path Rel File)) where
+  show (EnvT e a) = show e ++ "/" ++ show a

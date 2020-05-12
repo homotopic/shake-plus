@@ -34,5 +34,5 @@ getConfig :: MonadAction m => String -> m (Maybe String)
 getConfig = liftAction . Development.Shake.Config.getConfig
 
 -- | Lifted `Development.Shake.Config.getConfigKeys`.
-getConfigKeys :: MonadAction m =>  m [String]
-getConfigKeys = liftAction $ Development.Shake.Config.getConfigKeys
+getConfigKeys :: MonadAction m => m [String]
+getConfigKeys = liftAction Development.Shake.Config.getConfigKeys

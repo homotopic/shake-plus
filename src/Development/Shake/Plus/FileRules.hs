@@ -8,6 +8,7 @@ module Development.Shake.Plus.FileRules (
 , (%>)
 , (|%>)
 , (%^>)
+, (|%^>)
 , phony
 ) where
 
@@ -58,7 +59,11 @@ wantIn x = wantP . fmap (x </>)
 
 -- | `Env` variant of `(%>)`, used to keep track of local directories.
 (%^>) :: (Partial, MonadReader r m, MonadRules m) => Env (Path Rel Dir) FilePattern -> (Env (Path Rel Dir) (Path Rel File) -> RAction r ()) -> m ()
-(%^>) xs ract = (liftA2 (Development.Shake.FilePath.</>) (toFilePath . E.ask) extract $ xs) %> (ract <=< (`asWithin` (E.ask xs)))
+(%^>) xs ract = liftA2 (Development.Shake.FilePath.</>) (toFilePath . E.ask) extract xs %> (ract <=< (`asWithin` E.ask xs))
+
+-- | `Env` variant of `(%>)`, used to keep track of local directories.
+(|%^>) :: (Partial, MonadReader r m, MonadRules m) => Env (Path Rel Dir) [FilePattern] -> (Env (Path Rel Dir) (Path Rel File) -> RAction r ()) -> m ()
+(|%^>) xs ract = ((Development.Shake.FilePath.</>) (toFilePath . E.ask $ xs) <$> extract xs) |%> (ract <=< (`asWithin` E.ask xs))
 
 -- | Lifted version of `Development.Shake.phony` using `RAction`
 phony :: (MonadReader r m, MonadRules m) => String -> RAction r () -> m ()
