@@ -57,11 +57,11 @@ wantIn x = wantP . fmap (x </>)
 (|%>) :: (Partial, MonadReader r m, MonadRules m) => [FilePattern] -> (Path Rel File -> RAction r ()) -> m ()
 (|%>) x ract = R.ask >>= \r -> liftRules $ x Development.Shake.|%> (runRAction r . (ract <=< parseRelFile))
 
--- | `Env` variant of `(%>)`, used to keep track of local directories.
+-- | `Within` variant of `(%>)`, used to keep track of local directories.
 (%^>) :: (Partial, MonadReader r m, MonadRules m) => Within Rel FilePattern -> (Within Rel (Path Rel File) -> RAction r ()) -> m ()
 (%^>) xs ract = liftA2 (Development.Shake.FilePath.</>) (toFilePath . E.ask) extract xs %> (ract <=< (`asWithin` E.ask xs))
 
--- | `Env` variant of `(%>)`, used to keep track of local directories.
+-- | `Within` variant of `(%>)`, used to keep track of local directories.
 (|%^>) :: (Partial, MonadReader r m, MonadRules m) => Within Rel [FilePattern] -> (Within Rel (Path Rel File) -> RAction r ()) -> m ()
 (|%^>) xs ract = ((Development.Shake.FilePath.</>) (toFilePath . E.ask $ xs) <$> extract xs) |%> (ract <=< (`asWithin` E.ask xs))
 

@@ -26,13 +26,13 @@ doesDirectoryExist = liftAction . Development.Shake.doesDirectoryExist . toFileP
 getDirectoryFiles :: MonadAction m => Path b Dir -> [FilePattern] -> m [Path Rel File]
 getDirectoryFiles x y = liftAction $ traverse (liftIO . parseRelFile) =<< Development.Shake.getDirectoryFiles (toFilePath x) y
 
--- | Like `getDirectoryFiles`, but returns an `Env` contaning a list of `Path`s.
+-- | Like `getDirectoryFiles`, but returns a `Within` contaning a list of `Path`s.
 getDirectoryFilesWithin :: MonadAction m => Path b Dir -> [FilePattern] -> m (Within b [Path Rel File])
 getDirectoryFilesWithin x pat = do
   xs <- getDirectoryFiles x pat
   return (xs `within` x)
 
--- | Like `getDirectoryFilesWithin`, but returns a list of `Env` values instead of an `Env` of a list.
+-- | Like `getDirectoryFilesWithin`, but returns a list of `Within` values instead of a `Within`` of a list.
 getDirectoryFilesWithin' :: MonadAction m => Path b Dir -> [FilePattern] -> m [Within b (Path Rel File)]
 getDirectoryFilesWithin' x pat = do
   xs <- getDirectoryFiles x pat

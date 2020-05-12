@@ -46,7 +46,7 @@ readFileLines = liftAction . fmap (fmap T.pack) . Development.Shake.readFileLine
 readFileIn' :: MonadAction m => Path Rel Dir -> Path Rel File -> m Text
 readFileIn' x y = readFile' $ x </> y
 
--- | Like 'readFile'`, but accepts an `Env` value.
+-- | Like 'readFile'`, but accepts a `Within` value.
 readFileWithin :: MonadAction m => Within Rel (Path Rel File) -> m Text
 readFileWithin = readFile' . liftA2 (</>) E.ask extract
 
@@ -63,7 +63,7 @@ writeFileLines x y = liftAction $ Development.Shake.writeFileLines (toFilePath x
 writeFileIn' :: MonadAction m => Path Rel Dir -> Path Rel File -> Text -> m ()
 writeFileIn' x y = writeFile' $ x </> y
 
--- | Like 'writeFile'`, but accepts a `Env` value.
+-- | Like 'writeFile'`, but accepts a `Within` value.
 writeFileWithin :: MonadAction m => Within Rel (Path Rel File) -> Text -> m ()
 writeFileWithin = writeFile' . liftA2 (</>) E.ask extract
 
@@ -76,7 +76,7 @@ writeFileChanged x y = liftAction $ Development.Shake.writeFileChanged (toFilePa
 writeFileChangedIn :: MonadAction m => Path Rel Dir -> Path Rel File -> Text -> m ()
 writeFileChangedIn x y = writeFileChanged $ x </> y
 
--- | Like `writeFileChanged'`, but accepts an `Env` value.
+-- | Like `writeFileChanged'`, but accepts a `Within` value.
 writeFileChangedWithin :: MonadAction m => Within Rel (Path Rel File) -> Text -> m ()
 writeFileChangedWithin = writeFileChanged . liftA2 (</>) E.ask extract
 

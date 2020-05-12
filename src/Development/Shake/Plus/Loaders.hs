@@ -4,7 +4,6 @@ module Development.Shake.Plus.Loaders (
 , batchLoadWithin'
 ) where
 
-import Control.Comonad.Env
 import Development.Shake.Plus.Core
 import Development.Shake.Plus.Directory
 import RIO
@@ -26,7 +25,7 @@ batchLoad dir pat f = do
   xs <- getDirectoryFiles dir pat >>= mapM (traverseToSnd $ f . fromWithin . (`within` dir))
   return . HM.fromList $ xs
 
--- | Like `batchLoad`, but returns an `Env` of a `Dir` containing the `HashMap`
+-- | Like `batchLoad`, but returns an `Within` of a `Dir` containing the `HashMap`
 batchLoadWithin :: MonadAction m
                 => Path b Dir -- ^ The directory to search in
                 -> [FilePattern] -- ^ A filepattern to match against.
@@ -36,7 +35,7 @@ batchLoadWithin dir pat f = do
   xs <- getDirectoryFiles dir pat >>= mapM (traverseToSnd $ f . fromWithin . (`within` dir))
   return $ (`within` dir) $ HM.fromList xs
 
--- | Like `batchLoadWithin'`, but returns a `HashMap` containing `Env` values instead of an `Env` of a `Hashmap`.
+-- | Like `batchLoadWithin'`, but returns a `HashMap` containing `Within` values instead of an `Within` of a `Hashmap`.
 batchLoadWithin' :: MonadAction m
                  => Path b Dir -- ^ The directory to search in
                  -> [FilePattern] -- ^ A filepattern to match against.

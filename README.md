@@ -10,8 +10,8 @@ utility functions of Shake with the following adjustments whereever possible.
   * `ShakePlus r a = ShakePlus (ReaderT r Rules a)`
 * `Text` instead of `String` wherever it is appropriate.
 * `within` style variants of the standard file and directory operations that
-  in some cases return or accept `Env (Path b Dir) (Path Rel File)` values
-  to keep tags of parent directories.
+  in some cases return or accept `Within b (Path Rel File)` values to keep tags
+of parent directories.
 
 This is an early release and some things may be missing or broken, but so
 far the conveniences have been worth it. Some notes on the approach are
@@ -37,13 +37,13 @@ sense to keep these as `Strings`.
 ## RAction
 
 The `ReaderT r Action a` transformer (called `RAction`) is similar to the
-[RIO](https://hackage.haskell.org/package.rio) type and should be used
+[RIO](https://hackage.haskell.org/package/rio) type and should be used
 similarly. In fact, you can reuse the logging functions from `RIO` within any
 `RAction` block, which is one of the main motivators for having an `Action`
 which is also a `MonadReader`. If you need to reuse an existing shake
 `Action` in an `RAction`, use `liftAction`.
 
-## Using Env
+## Using Within
 
 One common complaint about Shake is having to keep track of source and output
 directories and translating `FilePath`s when using the input to an `Action`,
@@ -53,21 +53,25 @@ degree, but in some cases is even more annoying because lots of `Path`
 functions use `MonadThrow`, leading to lots of monadic steps inside an
 `RAction`.
 
-To alleviate this somewhat, this repo introduces `Env (Path a Dir) (Path Rel
-File)` as a standard pattern for representing a file within a directory, and
-variants of the file operations and rules that typically accept `Path`s or
-callbacks. These functions are termed `within`. Here is the variant of
-`getDirectoryFiles` which produces `Env` values.
+To alleviate this somewhat, we use `Within b (Path Rel File)` as a standard
+pattern for representing a file within a directory. `Within` is a type
+available in the [within](https://hackage.haskell.org/package/within) package
+that is simply a newtype wrapper over an `Env` comonad with the environment
+specialized to `Path b Dir`. We provide variants of the file operations and
+rules that typically accept or return `Path`s or contain callbacks that expect
+paths and change these to `Within` values. These functions are generally
+suffixed `within`. Here is the variant of `getDirectoryFiles` variant which
+produces `Within` values.
 
 ```{.haskell}
-getDirectoryFilesWithin :: MonadAction m => Path Rel Dir -> [FilePattern] -> m (Env (Path Rel Dir) [(Path Rel File)])
+getDirectoryFilesWithin :: MonadAction m => Path b Dir -> [FilePattern] -> m (Within b [(Path Rel File)])
 ```
 
 You can convert to and from this within-style using `within` and `fromWithin`.
 
 ```{.haskell}
-let x = $(mkRelFile "a.txt") `within` $(mkRelDir "foo") -- produces `EnvT "foo" Identity "a.txt"`
-fromWithin x -- produces a `Path` "foo/a.txt"
+let x = $(mkRelFile "a.txt") `within` $(mkRelDir "foo") -- Within Rel (Path Rel File)
+fromWithin x -- produces a `Path Rel File`
 ```
 
 and you can assert that an existing path lies in a directory by using `asWithin`, which throws
@@ -78,21 +82,18 @@ $(mkRelFile "foo/a.txt") `asWithin` $(mkRelDir "foo") -- fine
 $(mkRelFile "a.txt") `asWithin` $(mkRelDir "foo") -- throws error
 ```
 
-Filerules such as `(%>)` have within-style variants that accept an `Env (Path b
+Filerules such as `(%>)` have within-style variants that accept an ` (Path b
 Dir) FilePattern` on the left and carry that env to the callback.
 
 ```{.haskell}
-(%^>) :: (Partial, MonadReader r m, MonadRules m) => Env (Path Rel Dir) FilePattern -> (Env (Path Rel Dir) (Path Rel File) -> RAction r ()) -> m ()
+(%^>) :: (Partial, MonadReader r m, MonadRules m) => Within Rel FilePattern -> (Within Rel (Path Rel File) -> RAction r ()) -> m ()
 ```
 
-You change the underlying filepath with `fmap` or `(>>=)`, whilst you can move
-to a new parent directory by using `E.local`, or `localM` which is defined in
-this library for when the map between parent directories may throw.
-
-Note: The `Env` instances are orphans and it would probably be wiser to have a
-newtype, but it didn't feel clear saying something like `Within b t` over `Env
-(Path b Dir) (Path Rel t)`.  This will have to change at some point but for now
-it's like this.
+You change the underlying filepath with `fmap` or `mapM`, whilst you can move
+to a new parent directory by using `localDir, or `localDirM` which is defined
+in the `Within` library for when the map between parent directories may throw.
+The `Within` library also contains more functions and instances for more
+precise changes between output and source directories.
 
 ## runShakePlus
 
