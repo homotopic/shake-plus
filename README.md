@@ -60,11 +60,11 @@ that is simply a newtype wrapper over an `Env` comonad with the environment
 specialized to `Path b Dir`. We provide variants of the file operations and
 rules that typically accept or return `Path`s or contain callbacks that expect
 paths and change these to `Within` values. These functions are generally
-suffixed `within`. Here is the variant of `getDirectoryFiles` variant which
+suffixed `within`. Here is the variant of `getDirectoryFiles` that
 produces `Within` values.
 
 ```{.haskell}
-getDirectoryFilesWithin :: MonadAction m => Path b Dir -> [FilePattern] -> m (Within b [(Path Rel File)])
+getDirectoryFilesWithin' :: MonadAction m => Path b Dir -> [FilePattern] -> m [Within b (Path Rel File)]
 ```
 
 You can convert to and from this within-style using `within` and `fromWithin`.
