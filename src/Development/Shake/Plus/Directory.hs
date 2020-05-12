@@ -8,11 +8,11 @@ module Development.Shake.Plus.Directory (
 , getDirectoryFilesIO
 ) where
 
-import Control.Comonad.Env
 import Development.Shake.Plus.Core
 import qualified Development.Shake
 import RIO
 import Path
+import Within
 
 -- | Lifted version of `Development.Shake.doesFileExist` using well-typed `Path`s.
 doesFileExist :: MonadAction m => Path b File -> m Bool
@@ -27,16 +27,16 @@ getDirectoryFiles :: MonadAction m => Path b Dir -> [FilePattern] -> m [Path Rel
 getDirectoryFiles x y = liftAction $ traverse (liftIO . parseRelFile) =<< Development.Shake.getDirectoryFiles (toFilePath x) y
 
 -- | Like `getDirectoryFiles`, but returns an `Env` contaning a list of `Path`s.
-getDirectoryFilesWithin :: MonadAction m => Path b Dir -> [FilePattern] -> m (Env (Path b Dir) [Path Rel File])
+getDirectoryFilesWithin :: MonadAction m => Path b Dir -> [FilePattern] -> m (Within b [Path Rel File])
 getDirectoryFilesWithin x pat = do
   xs <- getDirectoryFiles x pat
-  return (env x xs)
+  return (xs `within` x)
 
 -- | Like `getDirectoryFilesWithin`, but returns a list of `Env` values instead of an `Env` of a list.
-getDirectoryFilesWithin' :: MonadAction m => Path b Dir -> [FilePattern] -> m [Env (Path b Dir) (Path Rel File)]
+getDirectoryFilesWithin' :: MonadAction m => Path b Dir -> [FilePattern] -> m [Within b (Path Rel File)]
 getDirectoryFilesWithin' x pat = do
   xs <- getDirectoryFiles x pat
-  return (env x <$> xs)
+  return ((`within` x) <$> xs)
 
 -- | Lifted version of `Development.Shake.getDirectoryDirs` using well-typed `Path`s.
 getDirectoryDirs :: MonadAction m => Path b Dir -> m [Path Rel Dir]

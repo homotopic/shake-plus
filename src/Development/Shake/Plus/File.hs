@@ -1,6 +1,3 @@
-
-
-
 module Development.Shake.Plus.File (
   copyFile'
 , copyFileChanged
@@ -17,19 +14,16 @@ module Development.Shake.Plus.File (
 , writeFileChangedWithin
 , removeFiles
 , removeFilesAfter
-, asWithin
-, within
-, fromWithin
 ) where
 
 import Control.Exception.Extra
-import Data.Hashable
 import qualified Development.Shake
 import Development.Shake.Plus.Core
 import RIO
 import qualified RIO.Text as T
 import Path
 import Control.Comonad.Env as E
+import Within
 
 -- | Lifted version of `Development.Shake.copyFile` with well-typed `Path`s.
 copyFile' :: (MonadAction m, Partial) => Path Rel File -> Path Rel File -> m ()
@@ -53,7 +47,7 @@ readFileIn' :: MonadAction m => Path Rel Dir -> Path Rel File -> m Text
 readFileIn' x y = readFile' $ x </> y
 
 -- | Like 'readFile'`, but accepts an `Env` value.
-readFileWithin :: MonadAction m => Env (Path Rel Dir) (Path Rel File) -> m Text
+readFileWithin :: MonadAction m => Within Rel (Path Rel File) -> m Text
 readFileWithin = readFile' . liftA2 (</>) E.ask extract
 
 -- | Lifted version of `Development.Shake.writeFile` with well-typed `Path`.
@@ -70,7 +64,7 @@ writeFileIn' :: MonadAction m => Path Rel Dir -> Path Rel File -> Text -> m ()
 writeFileIn' x y = writeFile' $ x </> y
 
 -- | Like 'writeFile'`, but accepts a `Env` value.
-writeFileWithin :: MonadAction m => Env (Path Rel Dir) (Path Rel File) -> Text -> m ()
+writeFileWithin :: MonadAction m => Within Rel (Path Rel File) -> Text -> m ()
 writeFileWithin = writeFile' . liftA2 (</>) E.ask extract
 
 -- | Lifted version of `Development.Shake.writeFileChanged` with well-typed `Path`.
@@ -83,7 +77,7 @@ writeFileChangedIn :: MonadAction m => Path Rel Dir -> Path Rel File -> Text -> 
 writeFileChangedIn x y = writeFileChanged $ x </> y
 
 -- | Like `writeFileChanged'`, but accepts an `Env` value.
-writeFileChangedWithin :: MonadAction m => Env (Path Rel Dir) (Path Rel File) -> Text -> m ()
+writeFileChangedWithin :: MonadAction m => Within Rel (Path Rel File) -> Text -> m ()
 writeFileChangedWithin = writeFileChanged . liftA2 (</>) E.ask extract
 
 -- | Lifted version of `Development.Shake.removeFiles` with well-typed `Path`.
@@ -93,30 +87,3 @@ removeFiles x y = liftAction . liftIO $ Development.Shake.removeFiles (toFilePat
 -- | Lifted version of `Development.Shake.removeFilesAfter` with well-typed `Path`.
 removeFilesAfter :: MonadAction m => Path Rel Dir -> [FilePattern] -> m ()
 removeFilesAfter x y = liftAction $ Development.Shake.removeFilesAfter (toFilePath x) y
-
--- | Treat a `Path` as if it lies within another directory and returns an Env value.
--- Used infix like
---
--- >>> $(mkRelFile "foo/a.txt") `asWithin` $(mkRelDir "foo")
--- 
-asWithin :: MonadThrow m => Path a t -> Path a Dir -> m (Env (Path a Dir) (Path Rel t))
-asWithin x y = stripProperPrefix y x >>= \z -> return (EnvT y (Identity z))
-
--- | Synonym for `flip env`, put a relative path inside a directory.
--- 
--- >>> $(mkRelFile "a.txt") `within` $(mkRelDir "foo")
-within :: Path Rel t -> Path a Dir -> Env (Path a Dir) (Path Rel t)
-within = flip env
-
--- | Turns an `Env` directory containing a path into a single path.
-fromWithin :: Env (Path a Dir) (Path Rel t) -> Path a t
-fromWithin = liftA2 (</>) E.ask extract
-
-instance Eq (Env (Path b Dir) (Path Rel File)) where
-  (EnvT e a) == (EnvT e' a') = e == e' && a == a'
-
-instance Hashable (Env (Path b Dir) (Path Rel File)) where
-  hashWithSalt n w = hashWithSalt n (fromWithin w)
-
-instance Show (Env (Path b Dir) (Path Rel File)) where
-  show (EnvT e a) = show e ++ "/" ++ show a

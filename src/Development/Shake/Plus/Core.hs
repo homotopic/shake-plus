@@ -15,10 +15,8 @@ module Development.Shake.Plus.Core (
 , Development.Shake.FilePattern
 , Development.Shake.shake
 , Development.Shake.shakeOptions
-, localM
 ) where
 
-import Control.Comonad.Env
 import Control.Exception
 import Development.Shake (Action, Rules, FilePattern, shake, shakeOptions)
 import RIO
@@ -94,7 +92,3 @@ instance MonadThrow (RAction r) where
 
 instance MonadThrow (ShakePlus r) where
   throwM = liftIO . Control.Exception.throwIO
-
--- | Transform the environment of an `EnvT` via some monadic operation.
-localM :: Monad m => (e -> m e') -> EnvT e w a -> m (EnvT e' w a)
-localM f (EnvT e wa) = f e >>= \e' -> return $ EnvT e' wa

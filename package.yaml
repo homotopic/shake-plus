@@ -67,6 +67,7 @@ dependencies:
 - path
 - rio
 - shake
+- within
 
 library:
   source-dirs: src
