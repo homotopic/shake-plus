@@ -11,7 +11,7 @@ extra-source-files:
 
 category:            development, shake
 synopsis:            Re-export of Shake using well-typed paths and ReaderT.
-description:         Re-export of Shake using well-typed paths and ReaderT. This is an early release so some things may be missing or broken but so far the conveniences have been worth it.
+description:         Re-export of Shake using well-typed paths and ReaderT. You can thread logging through your Shake Actions, and better keep track of source and output folders using the Within type.
 
 default-extensions:
 - BangPatterns
