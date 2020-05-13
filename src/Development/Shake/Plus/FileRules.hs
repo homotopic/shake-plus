@@ -28,45 +28,45 @@ import           Within
 -- | Lifted version of `Development.Shake.need`, This still uses `String`s
 -- because it may refer to a phony rule. For the `Path` specific version
 -- use `needP`
-need :: (Partial, MonadAction m) => [String] -> m ()
-need = liftAction . Development.Shake.need
+need :: (Partial, MonadAction m, Foldable t) => t String -> m ()
+need = liftAction . Development.Shake.need . toList
 
 -- | Lifted version of `Development.Shake.want`. This still uses `String`s
 -- because it may refer to a phony rule. For the `Path` specific version
 -- use wantP.
-want :: (Partial, MonadRules m) => [String] -> m ()
-want = liftRules . Development.Shake.want
+want :: (Partial, MonadRules m, Foldable t) => t String -> m ()
+want = liftRules . Development.Shake.want . toList
 
 -- | Lifted version of `Development.Shake.need` using well-typed `Path`s
-needP :: (Partial, MonadAction m) => [Path b File] -> m ()
-needP = need . map toFilePath
+needP :: (Partial, MonadAction m, Traversable t) => t (Path b File) -> m ()
+needP = need . fmap toFilePath
 
 -- | Lifted version of `Development.Shake.want` using well-typed `Path`s
-wantP :: (Partial, MonadRules m) => [Path b File] -> m ()
-wantP = want . map toFilePath
+wantP :: (Partial, MonadRules m, Traversable t) => t (Path b File) -> m ()
+wantP = want . fmap toFilePath
 
 -- | Like `needP`, but accepts `Path`s relative to the first argument.
-needIn :: (Partial, MonadAction m) => Path b Dir -> [Path Rel File] -> m ()
+needIn :: (Partial, MonadAction m, Traversable t) => Path b Dir -> t (Path Rel File) -> m ()
 needIn x = needP . fmap (x </>)
 
 -- | Like `wantP`, but accepts `Path`s relative to the first argument.
-wantIn :: (Partial, MonadRules m) => Path b Dir -> [Path Rel File] -> m ()
+wantIn :: (Partial, MonadRules m, Traversable t) => Path b Dir -> t (Path Rel File) -> m ()
 wantIn x = wantP . fmap (x </>)
 
 -- | Like `needIn`, but accepts a list of `Path`s inside a `Within` value.
-needWithin :: (Partial, MonadAction m) => Within b [Path Rel File] -> m ()
+needWithin :: (Partial, MonadAction m, Traversable t) => Within b (t (Path Rel File)) -> m ()
 needWithin x = needIn (E.ask x) (extract x)
 
 -- | Like `wantIn`, but accepts a list of `Path`s insides a `Within` value.
-wantWithin :: (Partial, MonadRules m) => Within b [Path Rel File] -> m ()
+wantWithin :: (Partial, MonadRules m, Traversable t) => Within b (t (Path Rel File)) -> m ()
 wantWithin x = wantIn (E.ask x) (extract x)
 
 -- | Like `needWithin`, but accepts a list of `Within`s instead of a `Within` of a list.
-needWithin' :: (Partial, MonadAction m) => [Within b (Path Rel File)] -> m ()
+needWithin' :: (Partial, MonadAction m, Traversable t) => t (Within b (Path Rel File)) -> m ()
 needWithin' x = needP $ fromWithin <$> x
 
 -- | Like `wantWithin`, but accepts a list of `Within`s instead of a `Within` of a list.
-wantWithin' :: (Partial, MonadRules m) => [Within b (Path Rel File)] -> m ()
+wantWithin' :: (Partial, MonadRules m, Traversable t) => t (Within b (Path Rel File)) -> m ()
 wantWithin' x = wantP $ fromWithin <$> x
 
 -- | Lifted version of `Development.Shake.%>` using well-typed `Path`s
