@@ -34,8 +34,8 @@ batchLoadWithin :: MonadAction m
                 -> m (Within b (HashMap (Path Rel File) a))
 batchLoadWithin w f = do
   xs  <- getDirectoryFiles (E.ask w) (extract w)
-  xs' <- mapM (traverseToSnd $ f . (`within` (E.ask w))) xs
-  return $ (`within` (E.ask w)) $ HM.fromList xs'
+  xs' <- mapM (traverseToSnd $ f . (`within` E.ask w)) xs
+  return $ (`within` E.ask w) $ HM.fromList xs'
 
 -- | Like `batchLoadWithin'`, but returns a `HashMap` containing `Within` values instead of an `Within` of a `Hashmap`.
 batchLoadWithin' :: MonadAction m
@@ -44,5 +44,5 @@ batchLoadWithin' :: MonadAction m
                  -> m (HashMap (Within b (Path Rel File)) a)
 batchLoadWithin' w f = do
   xs  <- getDirectoryFiles (E.ask w) (extract w)
-  xs' <- mapM (traverseToSnd $ f . (`within` (E.ask w))) xs
-  return $ HM.fromList (first (`within` (E.ask w)) <$> xs')
+  xs' <- mapM (traverseToSnd $ f . (`within` E.ask w)) xs
+  return $ HM.fromList (first (`within` E.ask w) <$> xs')
