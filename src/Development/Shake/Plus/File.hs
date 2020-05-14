@@ -1,6 +1,8 @@
 module Development.Shake.Plus.File (
   copyFile'
 , copyFileChanged
+, copyFileWithin'
+, copyFileChangedWithin
 , readFile'
 , readFileLines
 , readFileIn'
@@ -32,6 +34,14 @@ copyFile' x y = liftAction $ Development.Shake.copyFile' (toFilePath x) (toFileP
 -- | Lifted version of `Development.Shake.copyFileChanged'` with well-typed `Path`s.
 copyFileChanged :: (MonadAction m, Partial) => Path Rel File -> Path Rel File -> m ()
 copyFileChanged x y = liftAction $ Development.Shake.copyFileChanged (toFilePath x) (toFilePath y)
+
+-- | Like copyFile', but accepts `Within` values.
+copyFileWithin' :: (MonadAction m, Partial) => Within Rel (Path Rel File) -> Within Rel (Path Rel File) -> m ()
+copyFileWithin' x y = copyFile' (fromWithin x) (fromWithin y)
+
+-- | Like copyFileChanged, but accepts `Within` values.
+copyFileChangedWithin :: (MonadAction m, Partial) => Within Rel (Path Rel File) -> Within Rel (Path Rel File) -> m ()
+copyFileChangedWithin x y = copyFileChanged (fromWithin x) (fromWithin y)
 
 -- | Lifted version of `Development.Shake.readFile'` with well-typed `Path`.
 readFile' :: (MonadAction m, Partial) => Path Rel File -> m Text

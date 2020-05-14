@@ -1,5 +1,9 @@
 # Changelog for shake-plus
 
+## v0.1.2.0
+
+* Add `copyFileWithin'` and `copyFileChangedWithin`.
+
 ## v0.1.1.0
 
 * Make `Within` style functions more consistent in that they actually take `Within` values
