@@ -1,5 +1,12 @@
 # Changelog for shake-plus
 
+## v0.1.1.0
+
+* Make `Within` style functions more consistent in that they actually take `Within` values
+  across the board.
+* Make `batchLoad` functions more consistent and usable.
+* `need` and `want` variants now take any `Traversable`.
+
 ## v0.1.0.0
 
 * Update to `within-0.1.1.0` which changes the data type to an `Env` comonad.
