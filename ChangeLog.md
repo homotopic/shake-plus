@@ -1,5 +1,9 @@
 # Changelog for shake-plus
 
+## v0.1.3.0
+
+* Re-export `Development.Shake.Command` with lifted `command` and `command_`.
+
 ## v0.1.2.0
 
 * Add `copyFileWithin'` and `copyFileChangedWithin`.
