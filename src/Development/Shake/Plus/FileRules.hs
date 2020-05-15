@@ -5,6 +5,8 @@ module Development.Shake.Plus.FileRules (
 , wantP
 , needIn
 , wantIn
+, needInFP
+, needInFP
 , needWithin
 , wantWithin
 , needWithin'
@@ -44,6 +46,14 @@ needP = need . fmap toFilePath
 -- | Lifted version of `Development.Shake.want` using well-typed `Path`s
 wantP :: (Partial, MonadRules m, Traversable t) => t (Path b File) -> m ()
 wantP = want . fmap toFilePath
+
+-- | Like `need`, but accepts `Path`s relative to the first argument.
+needInFP :: (Partial, MonadAction m, Traversable t) => Path b Dir -> t FilePattern -> m ()
+needInFP x = need . fmap (x Development.Shake.FilePath.</>)
+
+-- | Like `want`, but accepts `Path`s relative to the first argument.
+wantInFP :: (Partial, MonadRules m, Traversable t) => Path b Dir -> t FilePattern -> m ()
+wantInFP x = want . fmap (x Development.Shake.FilePath.</>)
 
 -- | Like `needP`, but accepts `Path`s relative to the first argument.
 needIn :: (Partial, MonadAction m, Traversable t) => Path b Dir -> t (Path Rel File) -> m ()
