@@ -14,6 +14,7 @@ module Development.Shake.Plus.Core (
 , Development.Shake.Rules
 , Development.Shake.FilePattern
 , Development.Shake.shake
+, Development.Shake.shakeArgs
 , Development.Shake.shakeOptions
 ) where
 
