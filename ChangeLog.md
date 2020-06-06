@@ -1,5 +1,9 @@
 # Changelog for shake-plus
 
+## v0.1.5.0
+
+* Add `getDirectoryFilesWithinIO` and `getDirectoryFilesWithinIO'`
+
 ## v0.1.4.0
 
 * Re-export `Development.Shake.shakeArgs`.

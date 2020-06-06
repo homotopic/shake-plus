@@ -6,6 +6,8 @@ module Development.Shake.Plus.Directory (
 , getDirectoryFilesWithin'
 , getDirectoryDirs
 , getDirectoryFilesIO
+, getDirectoryFilesWithinIO
+, getDirectoryFilesWithinIO'
 ) where
 
 import           Control.Comonad.Env as E
@@ -46,3 +48,15 @@ getDirectoryDirs x = liftAction $ traverse (liftIO . parseRelDir) =<< Developmen
 -- | Lifted version of `Development.Shake.getDirectoryFilesIO` using well-typed `Path`s.
 getDirectoryFilesIO :: MonadIO m => Path b Dir -> [FilePattern] -> m [Path Rel File]
 getDirectoryFilesIO x y = liftIO $ traverse (liftIO . parseRelFile) =<< Development.Shake.getDirectoryFilesIO (toFilePath x) y
+
+-- | Like `getDirectoryFilesIO`, but accepts a `Within` value and returns a `Within` contaning a list of `Path`s
+getDirectoryFilesWithinIO :: MonadIO m => Within b [FilePattern] -> m (Within b [Path Rel File])
+getDirectoryFilesWithinIO x = do
+  xs <- getDirectoryFilesIO (E.ask x) (extract x)
+  return (xs <$ x)
+
+-- | Like `getDirectoryFilesWithinIO`, but returns a list of `Within` values instead of a `Within`` of a list.
+getDirectoryFilesWithinIO' :: MonadIO m => Within b [FilePattern] -> m [Within b (Path Rel File)]
+getDirectoryFilesWithinIO' x = do
+  xs <- getDirectoryFilesIO (E.ask x) (extract x)
+  return ((<$ x) <$> xs)
