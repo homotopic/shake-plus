@@ -8,6 +8,8 @@ module Development.Shake.Plus (
 , module Development.Shake.Plus.Loaders
 , module Development.Shake.Plus.Oracle
 , module Development.Shake.Plus.Temp
+, module Path
+, module Within
 ) where
 
 import Development.Shake.Plus.Cache
@@ -19,3 +21,5 @@ import Development.Shake.Plus.FileRules
 import Development.Shake.Plus.Loaders
 import Development.Shake.Plus.Oracle
 import Development.Shake.Plus.Temp
+import Path
+import Within
