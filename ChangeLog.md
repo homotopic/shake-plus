@@ -1,5 +1,9 @@
 # Changelog for shake-plus
 
+## v0.1.6.0
+
+* Re-export `Path` and `Within`.
+
 ## v0.1.5.0
 
 * Add `getDirectoryFilesWithinIO` and `getDirectoryFilesWithinIO'`
