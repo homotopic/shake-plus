@@ -10,6 +10,7 @@ module Development.Shake.Plus.Core (
 , ShakePlus
 , runRAction
 , runShakePlus
+, runSimpleShakePlus
 , Development.Shake.Action
 , Development.Shake.Rules
 , Development.Shake.FilePattern
@@ -94,3 +95,11 @@ instance MonadThrow (RAction r) where
 
 instance MonadThrow (ShakePlus r) where
   throwM = liftIO . Control.Exception.throwIO
+
+-- | Run a `ShakePlus` with just a `LogFunc` in the environment that logs to stderr.
+runSimpleShakePlus :: MonadIO m => ShakePlus LogFunc a -> m ()
+runSimpleShakePlus m = do
+  lo <- logOptionsHandle stderr True
+  (lf, dlf) <- newLogFunc (setLogMinLevel LevelInfo lo)
+  liftIO $ Development.Shake.shakeArgs Development.Shake.shakeOptions $ void $ runShakePlus lf m
+  dlf

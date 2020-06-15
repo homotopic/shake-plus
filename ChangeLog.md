@@ -1,5 +1,9 @@
 # Changelog for shake-plus
 
+## v0.1.7.0
+
+* Add `runSimpleShakePlus` for quickrunning with args and a log function.
+
 ## v0.1.6.0
 
 * Re-export `Path` and `Within`.
