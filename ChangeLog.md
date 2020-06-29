@@ -1,5 +1,9 @@
 # Changelog for shake-plus
 
+## v0.1.8.0
+
+* Reexport `Development.Shake.Classes` and `Development.Shake.RuleResult`.
+
 ## v0.1.7.0
 
 * Add `runSimpleShakePlus` for quickrunning with args and a log function.
