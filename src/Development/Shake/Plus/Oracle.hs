@@ -4,6 +4,7 @@ module Development.Shake.Plus.Oracle (
 , addOracleHash
 , askOracle
 , askOracles
+, Development.Shake.RuleResult
 ) where
 
 import           Control.Exception.Extra

@@ -1,5 +1,6 @@
 module Development.Shake.Plus (
-  module Development.Shake.Plus.Cache
+  module Development.Shake.Classes
+, module Development.Shake.Plus.Cache
 , module Development.Shake.Plus.Command
 , module Development.Shake.Plus.Core
 , module Development.Shake.Plus.Directory
@@ -12,6 +13,7 @@ module Development.Shake.Plus (
 , module Within
 ) where
 
+import Development.Shake.Classes
 import Development.Shake.Plus.Cache
 import Development.Shake.Plus.Command
 import Development.Shake.Plus.Core
