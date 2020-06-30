@@ -11,6 +11,9 @@ module Development.Shake.Plus.Core (
 , runRAction
 , runShakePlus
 , runSimpleShakePlus
+, parallel
+, forP
+, par
 , Development.Shake.Action
 , Development.Shake.Rules
 , Development.Shake.FilePattern
@@ -103,3 +106,15 @@ runSimpleShakePlus m = do
   (lf, dlf) <- newLogFunc (setLogMinLevel LevelInfo lo)
   liftIO $ Development.Shake.shakeArgs Development.Shake.shakeOptions $ void $ runShakePlus lf m
   dlf
+
+-- | Unlifted `Development.Shake.parallel`.
+parallel :: MonadUnliftAction m => [m a] -> m [a]
+parallel xs = withRunInAction $ \run -> Development.Shake.parallel $ fmap run xs
+
+-- | Unlifted `Development.Shake.forP`.
+forP :: MonadUnliftAction m => [a] -> (a -> m b) -> m [b]
+forP x f = withRunInAction $ \run -> Development.Shake.forP x $ run . f
+
+-- | Unlifted `Development.Shake.par`.
+par :: MonadUnliftAction m => m a -> m b -> m (a, b) 
+par a b = withRunInAction $ \run -> Development.Shake.par (run a) (run b)
