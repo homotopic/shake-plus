@@ -1,5 +1,5 @@
 name:                shake-plus
-version:             0.1.8.0
+version:             0.1.9.0
 license:             MIT
 author:              "Daniel Firth"
 maintainer:          "dan.firth@homotopic.tech"
@@ -61,10 +61,10 @@ ghc-options:
 - -Wredundant-constraints
 
 dependencies:
+- aeson >= 1.4.7.1
 - base >= 4.7 && < 5
 - comonad
 - extra
-- hashable
 - path
 - rio
 - shake

@@ -1,5 +1,10 @@
 # Changelog for shake-plus
 
+## v0.1.9.0
+
+* Add lower bound to aeson.
+* Remove hashable dependency.
+
 ## v0.1.8.0
 
 * Reexport `Development.Shake.Classes` and `Development.Shake.RuleResult`.
