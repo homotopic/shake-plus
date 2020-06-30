@@ -1,5 +1,9 @@
 # Changelog for shake-plus
 
+## v0.1.10.0
+
+* Add unlifted versions of `parallel`, `forP` and `par`.
+
 ## v0.1.9.0
 
 * Add lower bound to aeson.
