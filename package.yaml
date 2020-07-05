@@ -1,5 +1,5 @@
 name:                shake-plus
-version:             0.1.10.0
+version:             0.2.0.0
 license:             MIT
 author:              "Daniel Firth"
 maintainer:          "dan.firth@homotopic.tech"
@@ -66,9 +66,10 @@ dependencies:
 - comonad
 - extra
 - path
+- path-like >= 0.2.0.0
 - rio
 - shake
-- within
+- within >= 0.2.0.0
 
 library:
   source-dirs: src

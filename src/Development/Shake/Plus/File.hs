@@ -1,21 +1,21 @@
 module Development.Shake.Plus.File (
-  copyFile'
+  copyFile
+, copyFile'
 , copyFileChanged
-, copyFileWithin'
-, copyFileChangedWithin
+, copyFileChanged'
 , readFile'
 , readFileLines
 , readFileIn'
-, readFileWithin
 , writeFile'
 , writeFileLines
 , writeFileIn'
-, writeFileWithin
 , writeFileChanged
 , writeFileChangedIn
-, writeFileChangedWithin
 , removeFiles
 , removeFilesAfter
+, FileLike(..)
+, DirLike(..)
+, (/>)
 ) where
 
 import           Control.Comonad.Env         as E
@@ -23,77 +23,65 @@ import           Control.Exception.Extra
 import qualified Development.Shake
 import           Development.Shake.Plus.Core
 import           Path
+import           Path.Like
 import           RIO
 import qualified RIO.Text                    as T
-import           Within
 
--- | Lifted version of `Development.Shake.copyFile` with well-typed `Path`s.
-copyFile' :: (MonadAction m, Partial) => Path Rel File -> Path Rel File -> m ()
-copyFile' x y = liftAction $ Development.Shake.copyFile' (toFilePath x) (toFilePath y)
+-- | Lifted version of `Development.Shake.copyFile` that copies between any two `FileLike`.
+copyFile :: (MonadAction m, FileLike b a, FileLike b' a', Partial) => a -> a' -> m ()
+copyFile x y = liftAction $ Development.Shake.copyFile' (toFilePath . toFile $ x) (toFilePath . toFile $ y)
 
--- | Lifted version of `Development.Shake.copyFileChanged'` with well-typed `Path`s.
-copyFileChanged :: (MonadAction m, Partial) => Path Rel File -> Path Rel File -> m ()
-copyFileChanged x y = liftAction $ Development.Shake.copyFileChanged (toFilePath x) (toFilePath y)
+-- | Like `copyFile` but for `FileLike`s that are of the same type, useful for type inference.
+copyFile' :: (MonadAction m, FileLike b a, Partial) => a -> a -> m ()
+copyFile' = copyFile
 
--- | Like copyFile', but accepts `Within` values.
-copyFileWithin' :: (MonadAction m, Partial) => Within Rel (Path Rel File) -> Within Rel (Path Rel File) -> m ()
-copyFileWithin' x y = copyFile' (fromWithin x) (fromWithin y)
+-- | Lifted version of `Development.Shake.copyFileChanged'` that copies between two `FileLike'.
+copyFileChanged :: (MonadAction m, FileLike b a, FileLike b' a', Partial) => a -> a' -> m ()
+copyFileChanged x y = liftAction $ Development.Shake.copyFileChanged (toFilePath . toFile $ x) (toFilePath . toFile $ y)
 
--- | Like copyFileChanged, but accepts `Within` values.
-copyFileChangedWithin :: (MonadAction m, Partial) => Within Rel (Path Rel File) -> Within Rel (Path Rel File) -> m ()
-copyFileChangedWithin x y = copyFileChanged (fromWithin x) (fromWithin y)
+-- | Like `copyFileChanged` but ensures the `FileLike`s are of the same type, useful for type inference.
+copyFileChanged' :: (MonadAction m, FileLike b a, Partial) => a -> a -> m ()
+copyFileChanged' = copyFileChanged
 
--- | Lifted version of `Development.Shake.readFile'` with well-typed `Path`.
-readFile' :: (MonadAction m, Partial) => Path Rel File -> m Text
-readFile' = liftAction . fmap T.pack . Development.Shake.readFile' . toFilePath
+-- | Lifted version of `Development.Shake.readFile'` that reads any `FileLike`.
+readFile' :: (MonadAction m, FileLike b a, Partial) => a -> m Text
+readFile' = liftAction . fmap T.pack . Development.Shake.readFile' . toFilePath . toFile
 
--- | Lifted version of `Development.Shake.readFileLines` with well-typed `Path`.
-readFileLines :: (MonadAction m, Partial) => Path Rel File -> m [Text]
-readFileLines = liftAction . fmap (fmap T.pack) . Development.Shake.readFileLines . toFilePath
+-- | Lifted version of `Development.Shake.readFileLines` that reads any `FileLike`.
+readFileLines :: (MonadAction m, FileLike b a, Partial) => a -> m [Text]
+readFileLines = liftAction . fmap (fmap T.pack) . Development.Shake.readFileLines . toFilePath . toFile
 
 -- | Like `readFile'`, but with an argument for the parent directory. Used for symmetry with
 -- the way `Development.Shake.getDirectoryFiles` takes arguments.
-readFileIn' :: MonadAction m => Path Rel Dir -> Path Rel File -> m Text
-readFileIn' x y = readFile' $ x </> y
+readFileIn' :: (MonadAction m, DirLike b d, FileLike Rel a, Partial) => d -> a -> m Text
+readFileIn' x y = readFile' $ x /> y
 
--- | Like 'readFile'`, but accepts a `Within` value.
-readFileWithin :: MonadAction m => Within Rel (Path Rel File) -> m Text
-readFileWithin = readFile' . liftA2 (</>) E.ask extract
+-- | Lifted version of `Development.Shake.writeFile` that writes to any `FileLike`.
+writeFile' :: (MonadAction m, FileLike b a, Partial) => a -> Text -> m ()
+writeFile' x y = liftAction $ Development.Shake.writeFile' (toFilePath . toFile $ x) (T.unpack y)
 
--- | Lifted version of `Development.Shake.writeFile` with well-typed `Path`.
-writeFile' :: (MonadAction m, Partial) => Path Rel File -> Text -> m ()
-writeFile' x y = liftAction $ Development.Shake.writeFile' (toFilePath x) (T.unpack y)
-
--- | Lifted version of `Development.Shake.writeFileLines` with well-typed `Path`.
-writeFileLines :: (MonadAction m, Partial) => Path Rel File -> [Text] -> m ()
-writeFileLines x y = liftAction $ Development.Shake.writeFileLines (toFilePath x) (fmap T.unpack y)
+-- | Lifted version of `Development.Shake.writeFileLines` that writes to any `FileLike`.
+writeFileLines :: (MonadAction m, FileLike b a, Partial) => a -> [Text] -> m ()
+writeFileLines x y = liftAction $ Development.Shake.writeFileLines (toFilePath . toFile $ x) (fmap T.unpack y)
 
 -- | Like `writeFile'`, but with an argument for the parent directory. Used for symmetry with
 -- the way `Development.Shake.getDirectoryFiles` takes arguments.
-writeFileIn' :: MonadAction m => Path Rel Dir -> Path Rel File -> Text -> m ()
-writeFileIn' x y = writeFile' $ x </> y
+writeFileIn' :: (MonadAction m, DirLike b d, FileLike Rel a, Partial) => d -> a -> Text -> m ()
+writeFileIn' x y = writeFile' $ x /> y
 
--- | Like 'writeFile'`, but accepts a `Within` value.
-writeFileWithin :: MonadAction m => Within Rel (Path Rel File) -> Text -> m ()
-writeFileWithin = writeFile' . liftA2 (</>) E.ask extract
-
--- | Lifted version of `Development.Shake.writeFileChanged` with well-typed `Path`.
-writeFileChanged :: (MonadAction m, Partial) => Path b File -> Text -> m ()
-writeFileChanged x y = liftAction $ Development.Shake.writeFileChanged (toFilePath x) (T.unpack y)
+-- | Lifted version of `Development.Shake.writeFileChanged` that writes to any `FileLike`.
+writeFileChanged :: (MonadAction m, FileLike b a, Partial) => a -> Text -> m ()
+writeFileChanged x y = liftAction $ Development.Shake.writeFileChanged (toFilePath . toFile $ x) (T.unpack y)
 
 -- | Like `writeFileChanged'`, but with an argument for the parent directory. Used for symmetry with
 -- the way `Development.Shake.getDirectoryFiles` takes arguments.
-writeFileChangedIn :: MonadAction m => Path Rel Dir -> Path Rel File -> Text -> m ()
-writeFileChangedIn x y = writeFileChanged $ x </> y
+writeFileChangedIn :: (MonadAction m, DirLike b d, FileLike Rel a, Partial) => d -> a -> Text -> m ()
+writeFileChangedIn x y = writeFileChanged $ x /> y
 
--- | Like `writeFileChanged'`, but accepts a `Within` value.
-writeFileChangedWithin :: MonadAction m => Within Rel (Path Rel File) -> Text -> m ()
-writeFileChangedWithin = writeFileChanged . liftA2 (</>) E.ask extract
+-- | Lifted version of `Development.Shake.removeFiles` that accepts any `DirLike`.
+removeFiles :: (MonadAction m, DirLike b d) => d -> [FilePattern] -> m ()
+removeFiles x y = liftAction . liftIO $ Development.Shake.removeFiles (toFilePath . toDir $ x) y
 
--- | Lifted version of `Development.Shake.removeFiles` with well-typed `Path`.
-removeFiles :: MonadAction m => Path b File -> [FilePattern] -> m ()
-removeFiles x y = liftAction . liftIO $ Development.Shake.removeFiles (toFilePath x) y
-
--- | Lifted version of `Development.Shake.removeFilesAfter` with well-typed `Path`.
-removeFilesAfter :: MonadAction m => Path Rel Dir -> [FilePattern] -> m ()
-removeFilesAfter x y = liftAction $ Development.Shake.removeFilesAfter (toFilePath x) y
+-- | Lifted version of `Development.Shake.removeFilesAfter` that accepts any `DirLike`..
+removeFilesAfter :: (MonadAction m, DirLike b d) => d -> [FilePattern] -> m ()
+removeFilesAfter x y = liftAction $ Development.Shake.removeFilesAfter (toFilePath . toDir $ x) y

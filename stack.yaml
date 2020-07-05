@@ -1,3 +1,7 @@
 resolver: nightly-2020-06-29
 packages:
 - .
+extra-deps:
+- git: https://gitlab.com/homotopic-tech/within
+  commit: 9ee0e9cd34d3773b1896f8e8eb002b31b67b8533
+- path-like-0.2.0.0
