@@ -1,5 +1,10 @@
 # Changelog for shake-plus
 
+## v0.2.0.0
+
+* Add dependency on [path-like](https://hackage.haskell.org/package/path-like).
+* Update interface to use `FileLike` and `DirLike` and drop `Path` and `Within` specific variants.
+
 ## v0.1.10.0
 
 * Add unlifted versions of `parallel`, `forP` and `par`.
