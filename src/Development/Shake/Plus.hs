@@ -10,6 +10,7 @@ module Development.Shake.Plus (
 , module Development.Shake.Plus.Oracle
 , module Development.Shake.Plus.Temp
 , module Path
+, module Path.Like
 , module Within
 ) where
 
@@ -24,4 +25,5 @@ import Development.Shake.Plus.Loaders
 import Development.Shake.Plus.Oracle
 import Development.Shake.Plus.Temp
 import Path
+import Path.Like
 import Within
