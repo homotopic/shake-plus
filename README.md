@@ -64,7 +64,7 @@ suffixed `within`. Here is the variant of `getDirectoryFiles` that
 produces `Within` values.
 
 ```{.haskell}
-getDirectoryFilesWithin' :: MonadAction m => Path b Dir -> [FilePattern] -> m [Within b (Path Rel File)]
+getDirectoryFilesWithin' :: MonadAction m => Within Rel [FilePattern] -> m [Within b (Path Rel File)]
 ```
 
 You can convert to and from this within-style using `within` and `fromWithin`.
@@ -94,6 +94,16 @@ to a new parent directory by using `localDir`, or `localDirM` which is defined
 in the `Within` library for when the map between parent directories may throw.
 The `Within` library also contains more functions and instances for more
 precise changes between output and source directories.
+
+## PathLike, FileLike and DirLike
+
+The [path-like](https://hackage.haskell.org/package/path-like) library provides
+type classes for things which are at least as strict as the `Path` type itself.
+All `Paths` are `PathLike`, a `Path b File` is `FileLike b` and a `Path b Dir`
+is `DirLike b`. A `Within b (Path Rel File)` is `FileLike b` and a `Within b
+(Path Rel Dir) is `DirLike b`. The `readFile` and `writeFile` variants in
+`shake-plus` can take any `FileLike`, and `copyFile` allows you to copy between
+any two `FileLike`.
 
 ## runShakePlus
 
