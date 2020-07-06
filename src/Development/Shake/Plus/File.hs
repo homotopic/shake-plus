@@ -1,3 +1,13 @@
+{- |
+   Module     : Development.Shake.Plus.File
+   Copyright  : Copyright (C) 2020 Daniel Firth
+   Maintainer : Daniel Firth <dan.firth@homotopic.tech
+   License    : MIT
+   Stability  : experimental
+
+File utilities in "Development.Shake" lifted to `MonadAction` and
+`FileLike`/`DirLike`.
+-}
 module Development.Shake.Plus.File (
   copyFile
 , copyFile'

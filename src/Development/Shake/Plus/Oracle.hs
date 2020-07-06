@@ -1,3 +1,12 @@
+{- |
+   Module     : Development.Shake.Plus.Oracle
+   Copyright  : Copyright (C) 2020 Daniel Firth
+   Maintainer : Daniel Firth <dan.firth@homotopic.tech
+   License    : MIT
+   Stability  : experimental
+
+Oracle utilities in "Development.Shake" lifted to `MonadAction` and `MonadRules`.
+-}
 module Development.Shake.Plus.Oracle (
   addOracle
 , addOracleCache

@@ -1,3 +1,12 @@
+{- |
+   Module     : Development.Shake.Plus.Cache
+   Copyright  : Copyright (C) 2020 Daniel Firth
+   Maintainer : Daniel Firth <dan.firth@homotopic.tech
+   License    : MIT
+   Stability  : experimental
+
+Cache utilities in "Development.Shake" lifted to `MonadAction`.
+-}
 module Development.Shake.Plus.Cache (
   newCache
 , newCacheIO

@@ -1,3 +1,13 @@
+{- |
+   Module     : Development.Shake.Plus
+   Copyright  : Copyright (C) 2020 Daniel Firth
+   Maintainer : Daniel Firth <dan.firth@homotopic.tech
+   License    : MIT
+   Stability  : experimental
+
+Module exports for Development.Shake.Plus. Re-exports everything in this package
+as well as "Path", "Path.Like" and "Within".
+-}
 module Development.Shake.Plus (
   module Development.Shake.Classes
 , module Development.Shake.Plus.Cache

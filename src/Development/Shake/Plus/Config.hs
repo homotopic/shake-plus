@@ -1,3 +1,12 @@
+{- |
+   Module     : Development.Shake.Plus.Config
+   Copyright  : Copyright (C) 2020 Daniel Firth
+   Maintainer : Daniel Firth <dan.firth@homotopic.tech
+   License    : MIT
+   Stability  : experimental
+
+Utilities in "Development.Shake.Config" lifted to `MonadAction` and `FileLike`/`DirLike`.
+-}
 module Development.Shake.Plus.Config (
   readConfigFile
 , readConfigFileWithEnv
@@ -11,19 +20,20 @@ import           Development.Shake
 import qualified Development.Shake.Config
 import           Development.Shake.Plus.Core
 import           Path
+import           Path.Like
 import           RIO
 
 -- | Lifted `Development.Shake.Config.readConfigFile` with well-typed path.
-readConfigFile :: MonadIO m => Path a File -> m (HashMap String String)
-readConfigFile = liftIO . Development.Shake.Config.readConfigFile . toFilePath
+readConfigFile :: (MonadIO m, FileLike b a) => a -> m (HashMap String String)
+readConfigFile = liftIO . Development.Shake.Config.readConfigFile . toFilePath . toFile
 
 -- | Lifted `Development.Shake.Config.readConfigFileWithEnv` with well-typed path.
-readConfigFileWithEnv :: MonadIO m => [(String, String)] -> Path a File -> m (HashMap String String)
-readConfigFileWithEnv vars file = liftIO $ Development.Shake.Config.readConfigFileWithEnv vars (toFilePath file)
+readConfigFileWithEnv :: (MonadIO m, FileLike b a) => [(String, String)] -> a -> m (HashMap String String)
+readConfigFileWithEnv vars file = liftIO $ Development.Shake.Config.readConfigFileWithEnv vars (toFilePath . toFile $ file)
 
 -- | Lifted `Development.Shake.Config.usingConfigFile` with well-typed path.
-usingConfigFile :: MonadRules m => Path a File -> m ()
-usingConfigFile = liftRules . Development.Shake.Config.usingConfigFile . toFilePath
+usingConfigFile :: (MonadRules m, FileLike b a) => a -> m ()
+usingConfigFile = liftRules . Development.Shake.Config.usingConfigFile . toFilePath . toFile
 
 -- | Lifted `Development.Shake.Config.usingConfig`.
 usingConfig :: MonadRules m => HashMap String String -> m ()

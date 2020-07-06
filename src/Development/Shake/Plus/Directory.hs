@@ -1,3 +1,13 @@
+{- |
+   Module     : Development.Shake.Plus.Directory
+   Copyright  : Copyright (C) 2020 Daniel Firth
+   Maintainer : Daniel Firth <dan.firth@homotopic.tech
+   License    : MIT
+   Stability  : experimental
+
+Directory utilities in "Development.Shake" lifted to `MonadAction` and
+`FileLike`/`DirLike`.
+-}
 module Development.Shake.Plus.Directory (
   doesFileExist
 , doesDirectoryExist

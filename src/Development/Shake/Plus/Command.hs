@@ -1,3 +1,12 @@
+{- |
+   Module     : Development.Shake.Plus.Command
+   Copyright  : Copyright (C) 2020 Daniel Firth
+   Maintainer : Daniel Firth <dan.firth@homotopic.tech
+   License    : MIT
+   Stability  : experimental
+
+Utilities in "Development.Shake.Command" lifted to `MonadAction`.
+-}
 {-# LANGUAGE TypeOperators #-}
 module Development.Shake.Plus.Command (
   command

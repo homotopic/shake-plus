@@ -1,3 +1,12 @@
+{- |
+   Module     : Development.Shake.Plus.Loaders
+   Copyright  : Copyright (C) 2020 Daniel Firth
+   Maintainer : Daniel Firth <dan.firth@homotopic.tech
+   License    : MIT
+   Stability  : experimental
+
+Experimental loaders for shake-plus. Load a collection of `FilePattern`s as a `HashMap`.
+-}
 module Development.Shake.Plus.Loaders (
   batchLoad
 , batchLoadWithin

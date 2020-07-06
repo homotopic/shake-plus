@@ -1,3 +1,12 @@
+{- |
+   Module     : Development.Shake.Plus.Temp
+   Copyright  : Copyright (C) 2020 Daniel Firth
+   Maintainer : Daniel Firth <dan.firth@homotopic.tech
+   License    : MIT
+   Stability  : experimental
+
+Temp utilities in "Development.Shake" unlifted to `MonadUnliftAction`.
+-}
 module Development.Shake.Plus.Temp (
   withTempFile
 , withTempDir
