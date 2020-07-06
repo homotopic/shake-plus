@@ -19,8 +19,8 @@ import           RIO
 import           Within
 
 -- | Lifted version of `Development.Shake.doesFileExist` using well-typed `Path`s.
-doesFileExist :: (MonadAction m, DirLike b a) => a -> m Bool
-doesFileExist = liftAction . Development.Shake.doesFileExist . toFilePath . toDir
+doesFileExist :: (MonadAction m, FileLike b a) => a -> m Bool
+doesFileExist = liftAction . Development.Shake.doesFileExist . toFilePath . toFile
 
 -- | Lifted version of `Development.Shake.doesDirectoryExist` using well-typed `Path`s.
 doesDirectoryExist :: (MonadAction m, DirLike b a) => a -> m Bool
