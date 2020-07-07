@@ -7,7 +7,6 @@
 
 Utilities in "Development.Shake.Command" lifted to `MonadAction`.
 -}
-{-# LANGUAGE TypeOperators #-}
 module Development.Shake.Plus.Command (
   command
 , command_
