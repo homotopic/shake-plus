@@ -1,7 +1,7 @@
 {- |
    Module     : Development.Shake.Plus.Oracle
    Copyright  : Copyright (C) 2020 Daniel Firth
-   Maintainer : Daniel Firth <dan.firth@homotopic.tech
+   Maintainer : Daniel Firth <dan.firth@homotopic.tech>
    License    : MIT
    Stability  : experimental
 

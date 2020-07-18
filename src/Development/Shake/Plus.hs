@@ -1,12 +1,12 @@
 {- |
    Module     : Development.Shake.Plus
    Copyright  : Copyright (C) 2020 Daniel Firth
-   Maintainer : Daniel Firth <dan.firth@homotopic.tech
+   Maintainer : Daniel Firth <dan.firth@homotopic.tech>
    License    : MIT
    Stability  : experimental
 
 Module exports for Development.Shake.Plus. Re-exports everything in this package
-as well as "Path", "Path.Like" and "Within".
+as well as "Path",
 -}
 module Development.Shake.Plus (
   module Development.Shake.Classes
@@ -16,12 +16,9 @@ module Development.Shake.Plus (
 , module Development.Shake.Plus.Directory
 , module Development.Shake.Plus.File
 , module Development.Shake.Plus.FileRules
-, module Development.Shake.Plus.Loaders
 , module Development.Shake.Plus.Oracle
 , module Development.Shake.Plus.Temp
 , module Path
-, module Path.Like
-, module Within
 ) where
 
 import Development.Shake.Classes
@@ -31,9 +28,6 @@ import Development.Shake.Plus.Core
 import Development.Shake.Plus.Directory
 import Development.Shake.Plus.File
 import Development.Shake.Plus.FileRules
-import Development.Shake.Plus.Loaders
 import Development.Shake.Plus.Oracle
 import Development.Shake.Plus.Temp
 import Path
-import Path.Like
-import Within

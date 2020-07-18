@@ -1,11 +1,11 @@
 {- |
    Module     : Development.Shake.Plus.Config
    Copyright  : Copyright (C) 2020 Daniel Firth
-   Maintainer : Daniel Firth <dan.firth@homotopic.tech
+   Maintainer : Daniel Firth <dan.firth@homotopic.tech>
    License    : MIT
    Stability  : experimental
 
-Utilities in "Development.Shake.Config" lifted to `MonadAction` and `FileLike`/`DirLike`.
+Utilities in "Development.Shake.Config" lifted to `MonadAction` and well-typed `Path`s.
 -}
 module Development.Shake.Plus.Config (
   readConfigFile
@@ -20,20 +20,19 @@ import           Development.Shake
 import qualified Development.Shake.Config
 import           Development.Shake.Plus.Core
 import           Path
-import           Path.Like
 import           RIO
 
 -- | Lifted `Development.Shake.Config.readConfigFile` with well-typed path.
-readConfigFile :: (MonadIO m, FileLike b a) => a -> m (HashMap String String)
-readConfigFile = liftIO . Development.Shake.Config.readConfigFile . toFilePath . toFile
+readConfigFile :: MonadIO m => Path b File -> m (HashMap String String)
+readConfigFile = liftIO . Development.Shake.Config.readConfigFile . toFilePath
 
 -- | Lifted `Development.Shake.Config.readConfigFileWithEnv` with well-typed path.
-readConfigFileWithEnv :: (MonadIO m, FileLike b a) => [(String, String)] -> a -> m (HashMap String String)
-readConfigFileWithEnv vars file = liftIO $ Development.Shake.Config.readConfigFileWithEnv vars (toFilePath . toFile $ file)
+readConfigFileWithEnv :: MonadIO m => [(String, String)] -> Path b File -> m (HashMap String String)
+readConfigFileWithEnv vars file = liftIO $ Development.Shake.Config.readConfigFileWithEnv vars (toFilePath file)
 
 -- | Lifted `Development.Shake.Config.usingConfigFile` with well-typed path.
-usingConfigFile :: (MonadRules m, FileLike b a) => a -> m ()
-usingConfigFile = liftRules . Development.Shake.Config.usingConfigFile . toFilePath . toFile
+usingConfigFile :: MonadRules m => Path b File -> m ()
+usingConfigFile = liftRules . Development.Shake.Config.usingConfigFile . toFilePath
 
 -- | Lifted `Development.Shake.Config.usingConfig`.
 usingConfig :: MonadRules m => HashMap String String -> m ()

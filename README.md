@@ -4,18 +4,12 @@ Attempt at a batteries included Shake. We reexport replacements for the main
 utility functions of Shake with the following adjustments whereever possible.
 
 * Well-typed paths using the [path](https://hackage.haskell.org/package/path)
+  library.
 * New type classes `MonadAction`, `MonadUnliftAction` and `MonadRules` with
   concrete `ReaderT` transformers:
   * `RAction r a = RAction (ReaderT r Action a)` and
   * `ShakePlus r a = ShakePlus (ReaderT r Rules a)`
 * `Text` instead of `String` wherever it is appropriate.
-* `within` style variants of the standard file and directory operations that
-  in some cases return or accept `Within b (Path Rel File)` values to keep tags
-of parent directories.
-
-This is an early release and some things may be missing or broken, but so
-far the conveniences have been worth it. Some notes on the approach are
-detailed below.
 
 ## Paths
 
@@ -42,68 +36,6 @@ similarly. In fact, you can reuse the logging functions from `RIO` within any
 `RAction` block, which is one of the main motivators for having an `Action`
 which is also a `MonadReader`. If you need to reuse an existing shake
 `Action` in an `RAction`, use `liftAction`.
-
-## Using Within
-
-One common complaint about Shake is having to keep track of source and output
-directories and translating `FilePath`s when using the input to an `Action`,
-leading to lots of repetition of the form `(sourceFolder </>) . (-<.> ".ext") .
-dropDirectory1` which is prone to breakage. Using `Path` helps this to some
-degree, but in some cases is even more annoying because lots of `Path`
-functions use `MonadThrow`, leading to lots of monadic steps inside an
-`RAction`.
-
-To alleviate this somewhat, we use `Within b (Path Rel File)` as a standard
-pattern for representing a file within a directory. `Within` is a type
-available in the [within](https://hackage.haskell.org/package/within) package
-that is simply a newtype wrapper over an `Env` comonad with the environment
-specialized to `Path b Dir`. We provide variants of the file operations and
-rules that typically accept or return `Path`s or contain callbacks that expect
-paths and change these to `Within` values. These functions are generally
-suffixed `within`. Here is the variant of `getDirectoryFiles` that
-produces `Within` values.
-
-```{.haskell}
-getDirectoryFilesWithin' :: MonadAction m => Within Rel [FilePattern] -> m [Within b (Path Rel File)]
-```
-
-You can convert to and from this within-style using `within` and `fromWithin`.
-
-```{.haskell}
-let x = $(mkRelFile "a.txt") `within` $(mkRelDir "foo") -- Within Rel (Path Rel File)
-fromWithin x -- produces a `Path Rel File`
-```
-
-and you can assert that an existing path lies in a directory by using `asWithin`, which throws
-if the directory is not a proper prefix of the `Path`.
-
-```{.haskell}
-$(mkRelFile "foo/a.txt") `asWithin` $(mkRelDir "foo") -- fine
-$(mkRelFile "a.txt") `asWithin` $(mkRelDir "foo") -- throws error
-```
-
-Filerules such as `(%>)` have within-style variants that accept an ` (Path b
-Dir) FilePattern` on the left and carry that env to the callback.
-
-```{.haskell}
-(%^>) :: (Partial, MonadReader r m, MonadRules m) => Within Rel FilePattern -> (Within Rel (Path Rel File) -> RAction r ()) -> m ()
-```
-
-You change the underlying filepath with `fmap` or `mapM`, whilst you can move
-to a new parent directory by using `localDir`, or `localDirM` which is defined
-in the `Within` library for when the map between parent directories may throw.
-The `Within` library also contains more functions and instances for more
-precise changes between output and source directories.
-
-## PathLike, FileLike and DirLike
-
-The [path-like](https://hackage.haskell.org/package/path-like) library provides
-type classes for things which are at least as strict as the `Path` type itself.
-All `Paths` are `PathLike`, a `Path b File` is `FileLike b` and a `Path b Dir`
-is `DirLike b`. A `Within b (Path Rel File)` is `FileLike b` and a `Within b
-(Path Rel Dir) is `DirLike b`. The `readFile` and `writeFile` variants in
-`shake-plus` can take any `FileLike`, and `copyFile` allows you to copy between
-any two `FileLike`.
 
 ## runShakePlus
 

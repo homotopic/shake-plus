@@ -1,5 +1,13 @@
 # Changelog for shake-plus
 
+## v0.3.0.0
+
+* Drop dependency on path-like.
+* Drop dependency on within.
+* Drop `Development.Shake.Plus.Loaders` module.
+* Restore monomorphic `Path` variants of everything.
+* Move `within` style combinators to [shake-plus-extended](https://hackage.haskell.org/package/shake-plus-extended).
+
 ## v0.2.0.0
 
 * Add dependency on [path-like](https://hackage.haskell.org/package/path-like).

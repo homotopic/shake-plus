@@ -1,5 +1,5 @@
 name:                shake-plus
-version:             0.2.0.1
+version:             0.3.0.0
 license:             MIT
 author:              "Daniel Firth"
 maintainer:          "dan.firth@homotopic.tech"
@@ -12,7 +12,7 @@ extra-source-files:
 
 category:            development, shake
 synopsis:            Re-export of Shake using well-typed paths and ReaderT.
-description:         Re-export of Shake using well-typed paths and ReaderT. You can thread logging through your Shake Actions, and better keep track of source and output folders using the Within type.
+description:         Re-export of Shake using well-typed paths and ReaderT. You can thread logging through your Shake Actions.
 
 default-extensions:
 - BangPatterns
@@ -61,15 +61,12 @@ ghc-options:
 - -Wredundant-constraints
 
 dependencies:
-- aeson >= 1.4.7.1
 - base >= 4.7 && < 5
 - comonad
 - extra
 - path
-- path-like >= 0.2.0.0
 - rio
 - shake
-- within >= 0.2.0.0
 
 library:
   source-dirs: src
