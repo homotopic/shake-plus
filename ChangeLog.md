@@ -1,5 +1,9 @@
 # Changelog for shake-plus
 
+## v0.3.1.0
+
+* Remove unnecessary comonad dependency.
+
 ## v0.3.0.0
 
 * Drop dependency on path-like.
