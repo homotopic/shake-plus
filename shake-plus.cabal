@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ca3941017f20a754ecdc3ed8226a6e0019623770241a40a285aa584e6c7588f4
+-- hash: 2aa6f0e7e2fcf1825e0a4d1810ae3bdd497f9011d9b005954cd761b06ab81811
 
 name:           shake-plus
 version:        0.3.0.0
@@ -44,7 +44,6 @@ library
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
-    , comonad
     , extra
     , path
     , rio

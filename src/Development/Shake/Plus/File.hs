@@ -23,7 +23,6 @@ module Development.Shake.Plus.File (
 , removeFilesAfter
 ) where
 
-import           Control.Comonad.Env         as E
 import           Control.Exception.Extra
 import qualified Development.Shake
 import           Development.Shake.Plus.Core
