@@ -15,7 +15,6 @@ module Development.Shake.Plus.Forward (
 , cacheActionWith
 ) where
 
-import           Development.Shake           (ShakeOptions)
 import           Development.Shake.Classes
 import qualified Development.Shake.Forward
 import           Development.Shake.Plus.Core

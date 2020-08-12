@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 12ebe5329544fbce8c2d82840e804e839d6b418cd3df8e24431a0defd725bcf1
+-- hash: 6139b6faddf55117f1945ba2cd6201b0a5f37656df9ddde586065f078dfc97ea
 
 name:           shake-plus
-version:        0.3.1.0
+version:        0.3.2.0
 synopsis:       Re-export of Shake using well-typed paths and ReaderT.
 description:    Re-export of Shake using well-typed paths and ReaderT. You can thread logging through your Shake Actions.
 category:       development, shake
