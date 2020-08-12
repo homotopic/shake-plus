@@ -1,7 +1,5 @@
 {- |
    Module     : Development.Shake.Plus.Core
-   Copyright  : Copyright (C) 2020 Daniel Firth
-   Maintainer : Daniel Firth <dan.firth@homotopic.tech>
    License    : MIT
    Stability  : experimental
 
@@ -116,5 +114,5 @@ forP :: MonadUnliftAction m => [a] -> (a -> m b) -> m [b]
 forP x f = withRunInAction $ \run -> Development.Shake.forP x $ run . f
 
 -- | Unlifted `Development.Shake.par`.
-par :: MonadUnliftAction m => m a -> m b -> m (a, b) 
+par :: MonadUnliftAction m => m a -> m b -> m (a, b)
 par a b = withRunInAction $ \run -> Development.Shake.par (run a) (run b)

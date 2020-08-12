@@ -1,7 +1,5 @@
 {- |
    Module     : Development.Shake.Plus.Command
-   Copyright  : Copyright (C) 2020 Daniel Firth
-   Maintainer : Daniel Firth <dan.firth@homotopic.tech>
    License    : MIT
    Stability  : experimental
 
@@ -40,7 +38,7 @@ import Development.Shake.Plus.Core
 import RIO
 
 -- | Lifted version of `Development.Shake.command`.
-command :: (Partial, CmdResult r, MonadAction m) => [CmdOption] -> String -> [String] -> m r 
+command :: (Partial, CmdResult r, MonadAction m) => [CmdOption] -> String -> [String] -> m r
 command x y z = liftAction $ Development.Shake.command x y z
 
 -- | Lifted version of `Development.Shake.command_`.
