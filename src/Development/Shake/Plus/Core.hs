@@ -26,6 +26,7 @@ module Development.Shake.Plus.Core (
 , Development.Shake.shake
 , Development.Shake.shakeArgs
 , Development.Shake.shakeOptions
+, Development.Shake.ShakeOptions(..)
 ) where
 
 import           Control.Exception
