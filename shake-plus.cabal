@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: a2653e4c9541cc14dbcb4abb08093b5c495df699140a24db21f1a74da7e4bef1
+-- hash: 12ebe5329544fbce8c2d82840e804e839d6b418cd3df8e24431a0defd725bcf1
 
 name:           shake-plus
 version:        0.3.1.0
@@ -34,6 +34,7 @@ library
       Development.Shake.Plus.Env
       Development.Shake.Plus.File
       Development.Shake.Plus.FileRules
+      Development.Shake.Plus.Forward
       Development.Shake.Plus.Oracle
       Development.Shake.Plus.Temp
   other-modules:
