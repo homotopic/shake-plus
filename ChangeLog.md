@@ -1,5 +1,9 @@
 # Changelog for shake-plus
 
+## v0.3.2.0
+
+* Re-export `Development.Shake.Forward`.
+
 ## v0.3.1.0
 
 * Remove unnecessary comonad dependency.
@@ -77,7 +81,7 @@
 * Add convenience functions `loadSortFilterApply` and `loadSortFilterApplyW` for batch
   loading via `MonadAction`.
 * Add more of the API surface with `Path` and `Within` including variants of `need`, `want`
-  `readFile`, `writeFile`. 
+  `readFile`, `writeFile`.
 
 ## v0.0.1.0
 
