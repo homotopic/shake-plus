@@ -17,8 +17,8 @@ module Development.Shake.Plus.Forward (
 
 import           Development.Shake.Classes
 import qualified Development.Shake.Forward
-import           Development.Shake.Plus.Core
 import           Development.Shake.Plus.Command
+import           Development.Shake.Plus.Core
 import           RIO
 
 -- | Lifted version of `Development.Shake.Forward.shakeForward` using `RAction`.

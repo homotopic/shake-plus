@@ -21,13 +21,13 @@ module Development.Shake.Plus (
 , module Path
 ) where
 
-import Development.Shake.Classes
-import Development.Shake.Plus.Cache
-import Development.Shake.Plus.Command
-import Development.Shake.Plus.Core
-import Development.Shake.Plus.Directory
-import Development.Shake.Plus.File
-import Development.Shake.Plus.FileRules
-import Development.Shake.Plus.Oracle
-import Development.Shake.Plus.Temp
-import Path
+import           Development.Shake.Classes
+import           Development.Shake.Plus.Cache
+import           Development.Shake.Plus.Command
+import           Development.Shake.Plus.Core
+import           Development.Shake.Plus.Directory
+import           Development.Shake.Plus.File
+import           Development.Shake.Plus.FileRules
+import           Development.Shake.Plus.Oracle
+import           Development.Shake.Plus.Temp
+import           Path

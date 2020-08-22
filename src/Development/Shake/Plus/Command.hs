@@ -29,13 +29,13 @@ module Development.Shake.Plus.Command (
 , Development.Shake.Command.CmdOption(..)
 ) where
 
-import Control.Exception.Extra
+import           Control.Exception.Extra
+import           Development.Shake           (CmdOption, CmdResult)
 import qualified Development.Shake
-import Development.Shake (CmdResult, CmdOption)
-import Development.Shake.Command (CmdArguments, (:->))
+import           Development.Shake.Command   ((:->), CmdArguments)
 import qualified Development.Shake.Command
-import Development.Shake.Plus.Core
-import RIO
+import           Development.Shake.Plus.Core
+import           RIO
 
 -- | Lifted version of `Development.Shake.command`.
 command :: (Partial, CmdResult r, MonadAction m) => [CmdOption] -> String -> [String] -> m r
