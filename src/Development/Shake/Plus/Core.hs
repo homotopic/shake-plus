@@ -23,6 +23,8 @@ module Development.Shake.Plus.Core (
 , Development.Shake.Action
 , Development.Shake.Rules
 , Development.Shake.FilePattern
+, Development.Shake.RuleResult
+, Development.Shake.ShakeValue
 , Development.Shake.shake
 , Development.Shake.shakeArgs
 , Development.Shake.shakeOptions

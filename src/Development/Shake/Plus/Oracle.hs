@@ -15,7 +15,6 @@ module Development.Shake.Plus.Oracle (
 ) where
 
 import           Control.Exception.Extra
-import           Development.Shake           (RuleResult, ShakeValue)
 import qualified Development.Shake
 import           Development.Shake.Plus.Core
 import           RIO
