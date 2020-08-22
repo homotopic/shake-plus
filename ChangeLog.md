@@ -1,5 +1,9 @@
 # Changelog for shake-plus
 
+## v0.3.3.0
+
+* Re-export `RuleResult` and `ShakeValue`.
+
 ## v0.3.2.0
 
 * Re-export `Development.Shake.Forward`.
