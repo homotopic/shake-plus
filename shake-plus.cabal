@@ -4,14 +4,13 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 093cbf4c865c5474ccd89708f0aa587681d036316cb900f9b413880ea25eef22
+-- hash: f40b8230b7fdd8089ab265bf25a56a9ee858a4385b1bf6551e9693bea76eb9b6
 
 name:           shake-plus
-version:        0.3.3.0
+version:        0.3.3.1
 synopsis:       Re-export of Shake using well-typed paths and ReaderT.
 description:    Re-export of Shake using well-typed paths and ReaderT. You can thread logging through your Shake Actions.
 category:       development, shake
-homepage:       https://gitlab.com/shake-plus/shake-plus
 author:         Daniel Firth
 maintainer:     dan.firth@homotopic.tech
 copyright:      2020 Daniel Firth
@@ -21,6 +20,10 @@ build-type:     Simple
 extra-source-files:
     README.md
     ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://gitlab.com/homotopic-tech/shake-plus
 
 library
   exposed-modules:

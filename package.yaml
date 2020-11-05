@@ -1,10 +1,10 @@
 name:                shake-plus
-version:             0.3.3.0
+version:             0.3.3.1
 license:             MIT
 author:              "Daniel Firth"
 maintainer:          "dan.firth@homotopic.tech"
 copyright:           "2020 Daniel Firth"
-homepage:            https://gitlab.com/shake-plus/shake-plus
+git:                 https://gitlab.com/homotopic-tech/shake-plus
 
 extra-source-files:
 - README.md
