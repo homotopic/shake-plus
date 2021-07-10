@@ -1,5 +1,9 @@
 # Changelog for shake-plus
 
+## v0.3.4.0
+
+* Fix for GHC 9's simplified subsumption change.
+
 ## v0.3.3.0
 
 * Re-export `RuleResult` and `ShakeValue`.

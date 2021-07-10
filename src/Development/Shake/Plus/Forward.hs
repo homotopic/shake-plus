@@ -35,7 +35,7 @@ forwardRule ract = ask >>= \r -> liftRules $ Development.Shake.Forward.forwardRu
 
 -- | Lifted version of `Development.Shake.cache`.
 cache :: MonadAction m => (forall r. CmdArguments r => r) -> m ()
-cache = liftAction
+cache = \c -> liftAction c
 
 -- | Lifted version of `Development.Shake.Forward.cacheAction`.
 cacheAction :: (MonadUnliftAction m, Typeable a, Binary a, Show a, Typeable b, Binary b, Show b) => a -> m b -> m b
